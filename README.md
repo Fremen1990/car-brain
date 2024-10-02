@@ -6,10 +6,12 @@ Here's a summary of the features and tech stack for your CarBrain app:
 
 ### **Core Features:**
 
-**Download your car details by your car VIM number from GOV**
-**Add car image photo or file **
-**Add many cars (max 2 for free)**
-**Add drivers**
+1. **Download your car details by your car VIM number from GOV**
+2. **Add car image photo or file **
+3. **Add many cars (max 2 for free)**
+4. **Add drivers**
+
+-------------
 
 1. **Car Service Management**: Track regular car servicing, repairs, and maintenance history.
 2. **Cost Management**: Record and monitor expenses related to car maintenance, repairs, refueling, and other expenses.
