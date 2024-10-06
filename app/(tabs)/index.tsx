@@ -1,32 +1,17 @@
-import { StyleSheet } from 'react-native';
-
-import { Text, View } from '@/components/Themed';
-import {useTheme} from "@/contexts/ThemeContext";
+import React from "react";
+import { View, Text, SafeAreaView } from "@/components/Themed";
+import { useTheme } from "@/contexts/ThemeContext";
+import { Switch } from "react-native";
 
 export default function TabOneScreen() {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
-    <View style={styles.container} className={`${isDarkMode? "bg-primary" : "bg-secondary"}`}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
+    <SafeAreaView className="h-full flex-1 items-center justify-center">
+      <View className="w-full h-64 items-center justify-center">
+        <Text>{isDarkMode ? "Dark Mode Active" : "Light Mode Active"}</Text>
+        <Switch value={isDarkMode} onValueChange={toggleTheme} />
+      </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});

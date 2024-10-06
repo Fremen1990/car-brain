@@ -4,7 +4,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Light theme colors
         primary: "#161622",
         secondary: {
           DEFAULT: "#FF9C01",
@@ -18,15 +17,7 @@ module.exports = {
         },
         gray: {
           100: "#CDCDE0",
-          200: "#F0F0F5", // light gray for light theme
         },
-
-        // Dark mode colors
-        "dark-bg": "#161622", // background color for dark mode
-        "dark-primary": "#FF9C01", // primary accent for dark mode
-        "dark-secondary": "#CDCDE0", // lighter elements for dark mode
-        "dark-black": "#000000", // black for dark mode
-        "dark-gray": "#1E1E2D", // gray shades for dark mode
       },
       fontFamily: {
         pthin: ["Poppins-Thin", "sans-serif"],
@@ -41,6 +32,5 @@ module.exports = {
       },
     },
   },
-  darkMode: 'class', // enable dark mode support with 'class'
   plugins: [],
 };
