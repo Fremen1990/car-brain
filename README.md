@@ -4,12 +4,24 @@ Here's a summary of the features and tech stack for your CarBrain app:
 
 ### **App Name: CarBrain**
 
+- Create AI Graphics
+- Create AI Video with intro to Car-Brain
+
 ### **Core Features:**
+
+1. **Download your car details by your car VIM number from GOV**
+2. **Add car image photo or file **
+3. **Add many cars (max 2 for free)**
+4. **Add drivers**
+
+-------------
+
 1. **Car Service Management**: Track regular car servicing, repairs, and maintenance history.
 2. **Cost Management**: Record and monitor expenses related to car maintenance, repairs, refueling, and other expenses.
 3. **Refueling Tracker**: Log each refueling event with details like date, amount, cost, and fuel efficiency.
 4. **Reminders & Alerts**: Set reminders for car services, insurance renewals, registration renewals, or tire changes.
-5. **Bill Upload**: Use the mobile camera or file upload to store bills, receipts, and documents related to car expenses.
+5. **Sync with Google Callendar** synchronize reminders with google callendar and similar callendars
+6. **Bill Upload**: Use the mobile camera or file upload to store bills, receipts, and documents related to car expenses.
 
 ### **Additional Features:**
 1. **Mileage Tracking**: Track mileage using GPS to monitor trips and fuel efficiency.
