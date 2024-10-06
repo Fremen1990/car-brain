@@ -4,6 +4,9 @@ Here's a summary of the features and tech stack for your CarBrain app:
 
 ### **App Name: CarBrain**
 
+- Create AI Graphics
+- Create AI Video with intro to Car-Brain
+
 ### **Core Features:**
 
 1. **Download your car details by your car VIM number from GOV**
