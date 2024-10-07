@@ -4,27 +4,35 @@
     "slug": "car-brain",
     "version": "0.1.0",
     "orientation": "default",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/carBrainIcon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/carBrainLogoSmall.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#161622"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        },
+        "NSCameraUsageDescription": "This app requires access to the camera.",
+        "NSPhotoLibraryUsageDescription": "This app requires access to the photo library."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/car-brain-logo.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/images/carBrainLogoSmall.png",
+        "backgroundColor": "#161622"
+      },
+      "package": "com.anonymous.carBrain"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/carBrainIcon.png"
     },
     "plugins": [
       "expo-router"
