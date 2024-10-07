@@ -33,24 +33,23 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getCurrentUser()
-      .then((response: Models.Document) => {
+    (async () => {
+      try {
+        const response = await getCurrentUser();
         if (response) {
           setUser(response);
-          // console.log("response", response);
           console.log(" GET USER", response);
           setIsLogged(true);
         } else {
           setIsLogged(false);
           setUser(undefined);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error(error);
-      })
-      .finally(() => {
+      } finally {
         setIsLoading(false);
-      });
+      }
+    })(); // IIFE to handle async code in useEffect
   }, []);
 
   return (

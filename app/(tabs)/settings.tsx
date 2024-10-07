@@ -1,9 +1,9 @@
-import React from "react";
 import { View, Text, SafeAreaView } from "@/components/Themed";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Switch } from "react-native";
+import React from "react";
 
-export default function TabOneScreen() {
+export const Settings = () => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
@@ -14,4 +14,4 @@ export default function TabOneScreen() {
       </View>
     </SafeAreaView>
   );
-}
+};

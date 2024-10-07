@@ -1,9 +1,8 @@
-import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, SafeAreaView, View } from "@/components/Themed";
 
 const Home = () => {
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full items-center justify-center">
       <View>
         <Text>HOME PAGE!! </Text>
       </View>

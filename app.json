@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/images/carBrainLogoSmall.png",
         "backgroundColor": "#161622"
       },
-      "package": "com.anonymous.carBrain"
+      "package": "com.devthomas.carBrain"
     },
     "web": {
       "bundler": "metro",

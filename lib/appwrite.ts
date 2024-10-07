@@ -92,8 +92,10 @@ export async function signOut() {
 }
 
 export const getCurrentUser = async () => {
+  console.log("GET CURRENT ACCOUNT ");
   try {
     const currentAccount = await account.get();
+    console.log("CURRENT ACCOUNT", currentAccount.$id);
 
     if (!currentAccount) throw Error;
 
@@ -104,8 +106,11 @@ export const getCurrentUser = async () => {
     );
     if (!currentUser) throw Error;
 
+    console.log("CURRENT USER", currentUser);
+
     return currentUser.documents[0];
   } catch (error: any) {
+    console.log("ERROR FAKTYCZNY ERROR ", error);
     throw new Error(error);
   }
 };

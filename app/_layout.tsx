@@ -55,7 +55,7 @@ const RootLayout = () => {
     }
   }, [loaded]);
 
-  if (!loaded) {
+  if (!loaded && !error) {
     return null;
   }
 
