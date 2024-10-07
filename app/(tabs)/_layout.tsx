@@ -1,9 +1,8 @@
-import React from "react";
-
 import { Tabs } from "expo-router";
-import { View, Image, ImageProps, Text } from "react-native";
 
 import { icons } from "../../constants";
+import { ImageProps, Image } from "react-native";
+import { View, Text } from "@/components/Themed";
 
 interface TabIconProps {
   icon: ImageProps;
@@ -78,37 +77,6 @@ const TabsLayout = () => {
             ),
           }}
         />
-        {/*<Tabs.Screen*/}
-        {/*  name="bookmark"*/}
-        {/*  options={{*/}
-        {/*    title: "Bookmark",*/}
-        {/*    headerShown: false,*/}
-        {/*    tabBarIcon: ({ color, focused }) => (*/}
-        {/*      <TabIcon*/}
-        {/*        icon={icons.bookmark}*/}
-        {/*        color={color}*/}
-        {/*        name="bookmark"*/}
-        {/*        focused={focused}*/}
-        {/*      />*/}
-        {/*    ),*/}
-        {/*  }}*/}
-        {/*/>*/}
-
-        {/*<Tabs.Screen*/}
-        {/*  name="create"*/}
-        {/*  options={{*/}
-        {/*    title: "Create",*/}
-        {/*    headerShown: false,*/}
-        {/*    tabBarIcon: ({ color, focused }) => (*/}
-        {/*      <TabIcon*/}
-        {/*        icon={icons.plus}*/}
-        {/*        color={color}*/}
-        {/*        name="create"*/}
-        {/*        focused={focused}*/}
-        {/*      />*/}
-        {/*    ),*/}
-        {/*  }}*/}
-        {/*/>*/}
       </Tabs>
     </>
   );

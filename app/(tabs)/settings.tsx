@@ -1,9 +1,8 @@
 import { View, Text, SafeAreaView } from "@/components/Themed";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Switch } from "react-native";
-import React from "react";
 
-export const Settings = () => {
+const Settings = () => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
@@ -15,3 +14,5 @@ export const Settings = () => {
     </SafeAreaView>
   );
 };
+//  Always need to be export default
+export default Settings;
