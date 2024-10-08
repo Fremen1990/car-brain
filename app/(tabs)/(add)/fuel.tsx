@@ -6,7 +6,6 @@ const Fuel = () => {
     <SafeAreaView className="bg-primary h-full items-center justify-center">
       <View>
         <Text>Fuel ⛽ </Text>
-        <FloatingButton />
       </View>
     </SafeAreaView>
   );

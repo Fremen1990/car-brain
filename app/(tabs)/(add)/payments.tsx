@@ -6,7 +6,6 @@ const Payments = () => {
     <SafeAreaView className="bg-primary h-full items-center justify-center">
       <View>
         <Text>Payments 💵 </Text>
-        <FloatingButton />
       </View>
     </SafeAreaView>
   );

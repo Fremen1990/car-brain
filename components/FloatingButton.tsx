@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
   Animated,
   Dimensions,
@@ -141,14 +141,14 @@ export const FloatingButton = () => {
   return (
     <View style={styles.container}>
       {/* Centered Floating Button */}
-      <TouchableOpacity
+      <Pressable
         style={[styles.circle, { left: screenWidth / 2 - 30, zIndex: 10 }]} // Center the button horizontally
         onPress={() => {
           pop === false ? popIn() : popOut();
         }}
       >
         <Ionicons name="add-circle" size={50} color="#CDCDE0" />
-      </TouchableOpacity>
+      </Pressable>
 
       {/* Animated Icon 1 */}
       <Animated.View
@@ -164,11 +164,11 @@ export const FloatingButton = () => {
           },
         ]}
       >
-        <TouchableOpacity onPress={handleNavigateToService}>
+        <Pressable onPress={handleNavigateToService}>
           {/*<Link href="/(add)/service">*/}
           <MaterialIcons name="car-repair" size={24} color="#CDCDE0" />
           {/*</Link>*/}
-        </TouchableOpacity>
+        </Pressable>
       </Animated.View>
 
       {/* Animated Icon 2 */}
@@ -182,11 +182,11 @@ export const FloatingButton = () => {
           },
         ]}
       >
-        <TouchableOpacity onPress={handleNavigateToFuel}>
+        <Pressable onPress={handleNavigateToFuel}>
           {/*<Link href="/(add)/fuel">*/}
           <MaterialCommunityIcons name="fuel" size={24} color="#CDCDE0" />
           {/*</Link>*/}
-        </TouchableOpacity>
+        </Pressable>
       </Animated.View>
 
       {/* Animated Icon 3 */}
@@ -203,11 +203,11 @@ export const FloatingButton = () => {
           },
         ]}
       >
-        <TouchableOpacity onPress={handleNavigateToPayments}>
+        <Pressable onPress={handleNavigateToPayments}>
           {/*<Link href="/(add)/payments">*/}
           <Feather name="credit-card" size={24} color="#CDCDE0" />
           {/*</Link>*/}
-        </TouchableOpacity>
+        </Pressable>
       </Animated.View>
     </View>
   );

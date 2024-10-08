@@ -6,7 +6,6 @@ const Service = () => {
     <SafeAreaView className="bg-primary h-full items-center justify-center">
       <View>
         <Text>Service 🚗 </Text>
-        <FloatingButton />
       </View>
     </SafeAreaView>
   );
