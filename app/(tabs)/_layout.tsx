@@ -3,6 +3,7 @@ import { Tabs } from "expo-router";
 import { icons } from "../../constants";
 import { ImageProps, Image } from "react-native";
 import { View, Text } from "@/components/Themed";
+import FloatingButton from "@/components/FloatingButton";
 
 interface TabIconProps {
   icon: ImageProps;
@@ -21,7 +22,7 @@ const TabIcon = ({ icon, color, name, focused }: TabIconProps) => {
         className={"w-6 h-6"}
       />
       <Text
-        className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
+        className={`${focused ? "font-psemibold" : "font-pregular"} text-xs w-20 text-center`}
         style={{ color }}
       >
         {name}
@@ -47,15 +48,65 @@ const TabsLayout = () => {
         }}
       >
         <Tabs.Screen
-          name="home"
+          name="dashboard"
           options={{
-            title: "Home",
+            title: "Dashboard",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={icons.home}
+                icon={icons.dashboard}
                 color={color}
-                name="home"
+                name="dashboard"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="history"
+          options={{
+            title: "History",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.history}
+                color={color}
+                name="history"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="service"
+          options={{
+            title: "Service",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => null,
+          }}
+        />
+
+        <Tabs.Screen
+          name="(add)"
+          options={{
+            title: "Fuel",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => null,
+          }}
+        />
+
+        <Tabs.Screen
+          name="vehicles"
+          options={{
+            title: "Vehicles",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.vehicle}
+                color={color}
+                name="vehicles"
                 focused={focused}
               />
             ),
@@ -69,7 +120,7 @@ const TabsLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={icons.leftArrow}
+                icon={icons.settings}
                 color={color}
                 name="settings"
                 focused={focused}
@@ -78,6 +129,8 @@ const TabsLayout = () => {
           }}
         />
       </Tabs>
+      {/* Floating Button Positioned in the Center */}
+      <FloatingButton />
     </>
   );
 };

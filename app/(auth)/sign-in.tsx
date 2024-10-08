@@ -31,7 +31,7 @@ const SignIn = () => {
       setUser(result);
       setIsLogged(true);
 
-      router.replace("/home");
+      router.replace("/dashboard");
     } catch (error: any) {
       // TODO: Handle error
       // 1. Check if error is due to invalid credentials
