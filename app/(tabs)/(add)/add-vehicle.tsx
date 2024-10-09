@@ -2,7 +2,27 @@ import React, { useState } from "react";
 import FormField from "@/components/FormField";
 import { Button } from "react-native-paper";
 import { SafeAreaView, View, Text } from "@/components/Themed";
-import { ScrollView } from "react-native";
+import { ScrollView, Pressable } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import BouncyCheckbox from "react-native-bouncy-checkbox/lib";
+
+export interface Vehicle {
+  brand: string;
+  model: string;
+  year: number;
+  mileage: number;
+  vin: string;
+  licensePlate: string;
+  nextService: string;
+  technicalInspectionDate: string;
+  insuranceProvider: string;
+  insuranceRenewal: string;
+  image: string;
+}
 
 const AddVehicle = () => {
   const [form, setForm] = useState({
@@ -13,11 +33,27 @@ const AddVehicle = () => {
     vin: "",
     licensePlate: "",
     nextService: "",
+    technicalInspectionDate: "",
     insuranceProvider: "",
     insuranceRenewal: "",
-    registrationExpiry: "",
-    fuelEfficiency: "",
+    image: "",
   });
+
+  const scale = useSharedValue(1); // Shared value for the animation
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  });
+
+  const handlePressIn = () => {
+    scale.value = withSpring(1.1);
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1);
+  };
 
   const handleChange = (key: keyof typeof form, value: string | number) => {
     setForm((prevForm) => ({
@@ -27,7 +63,7 @@ const AddVehicle = () => {
   };
   const handleAddVehicle = () => {
     const newVehicle = {
-      id: Math.random().toString(), // Generate random ID for simplicity
+      id: Math.random().toString(), // Generate random ID for simplicity // TODO use here apwrite uuid
       brand: form.brand,
       model: form.model,
       year: parseInt(form.year),
@@ -35,18 +71,16 @@ const AddVehicle = () => {
       vin: form.vin,
       licensePlate: form.licensePlate,
       nextService: form.nextService,
-      insurance: {
-        provider: form.insuranceProvider,
-        renewalDate: form.insuranceRenewal,
-        status: "Active",
-      },
-      registration: { expiryDate: form.registrationExpiry },
-      fuelEfficiency: parseFloat(form.fuelEfficiency),
+      technicalInspectionDate: form.technicalInspectionDate,
+      insuranceProvider: form.insuranceProvider,
+      insuranceRenewal: form.insuranceRenewal,
     };
 
     console.log("New Vehicle:", newVehicle);
     // Here you can send the newVehicle data to the backend or Firestore
   };
+
+  //TODO: add validation with react-hook-form
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -101,6 +135,7 @@ const AddVehicle = () => {
             placeholder="Enter next service (e.g., 95,000 miles)"
             handleChangeText={(value) => handleChange("nextService", value)}
           />
+
           <FormField
             title="Insurance Provider"
             value={form.insuranceProvider}
@@ -109,6 +144,7 @@ const AddVehicle = () => {
               handleChange("insuranceProvider", value)
             }
           />
+
           <FormField
             title="Insurance Renewal Date"
             value={form.insuranceRenewal}
@@ -117,30 +153,19 @@ const AddVehicle = () => {
               handleChange("insuranceRenewal", value)
             }
           />
-          <FormField
-            title="Registration Expiry"
-            value={form.registrationExpiry}
-            placeholder="Enter registration expiry date (YYYY-MM-DD)"
-            handleChangeText={(value) =>
-              handleChange("registrationExpiry", value)
-            }
-          />
-          <FormField
-            title="Fuel Efficiency"
-            value={form.fuelEfficiency}
-            placeholder="Enter fuel efficiency (liters per 100km)"
-            keyboardType="numeric"
-            handleChangeText={(value) => handleChange("fuelEfficiency", value)}
-          />
 
           {/* Submit Button */}
-          <Button
-            mode="contained"
-            onPress={handleAddVehicle}
-            className="mt-4 bg-[#FFA001] rounded-lg"
-          >
-            Add Vehicle
-          </Button>
+          <Animated.View style={[animatedStyle]}>
+            <Pressable
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}
+              onPress={handleAddVehicle}
+            >
+              <Button mode="contained" className="bg-[#FFA001] rounded-lg">
+                Add Vehicle
+              </Button>
+            </Pressable>
+          </Animated.View>
         </View>
       </ScrollView>
     </SafeAreaView>
