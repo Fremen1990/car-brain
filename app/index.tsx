@@ -1,4 +1,4 @@
-import { View, Image, ScrollView, Text } from "react-native";
+import { Image, ScrollView, ActivityIndicator } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,9 +8,27 @@ import { StatusBar } from "expo-status-bar";
 
 import { Redirect, router } from "expo-router";
 import { useGlobalContext } from "@/contexts/GlobalProvider";
+import { View, Text } from "@/components/Themed";
 
 export default function App() {
   const { isLoading, isLogged } = useGlobalContext();
+
+  if (isLoading) {
+    return (
+      <SafeAreaView className="bg-primary h-full">
+        <ScrollView
+          contentContainerStyle={{
+            height: "100%",
+          }}
+        >
+          <View className="w-full justify-center items-center min-h-[85vh] px-4">
+            <ActivityIndicator size="large" color="#FFA001" />
+          </View>
+        </ScrollView>
+        <StatusBar backgroundColor="#161622" style="light" hidden={false} />
+      </SafeAreaView>
+    );
+  }
 
   if (!isLoading && isLogged) return <Redirect href="/dashboard" />;
 
