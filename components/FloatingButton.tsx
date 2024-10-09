@@ -126,16 +126,16 @@ export const FloatingButton = () => {
     ]).start();
   };
 
-  const handleNavigateToFuel = () => {
+  const handleNavigateAddToFuel = () => {
     router.push("/(add)/fuel"); // Navigate to fuel screen in (add) folder
   };
 
-  const handleNavigateToService = () => {
+  const handleNavigateAddToService = () => {
     router.push("/(add)/service"); // Navigate to service screen in (add) folder
   };
 
-  const handleNavigateToPayments = () => {
-    router.push("/(add)/payments"); // Navigate to payments screen in (add) folder
+  const handleNavigateToAddVehicle = () => {
+    router.push("/(add)/add-vehicle"); // Navigate to payments screen in (add) folder
   };
 
   return (
@@ -164,9 +164,9 @@ export const FloatingButton = () => {
           },
         ]}
       >
-        <Pressable onPress={handleNavigateToService}>
+        <Pressable onPress={handleNavigateAddToService}>
           {/*<Link href="/(add)/service">*/}
-          <MaterialIcons name="car-repair" size={24} color="#CDCDE0" />
+          <MaterialIcons name="car-repair" size={32} color="#CDCDE0" />
           {/*</Link>*/}
         </Pressable>
       </Animated.View>
@@ -182,9 +182,9 @@ export const FloatingButton = () => {
           },
         ]}
       >
-        <Pressable onPress={handleNavigateToFuel}>
+        <Pressable onPress={handleNavigateAddToFuel}>
           {/*<Link href="/(add)/fuel">*/}
-          <MaterialCommunityIcons name="fuel" size={24} color="#CDCDE0" />
+          <MaterialCommunityIcons name="fuel" size={32} color="#CDCDE0" />
           {/*</Link>*/}
         </Pressable>
       </Animated.View>
@@ -203,9 +203,12 @@ export const FloatingButton = () => {
           },
         ]}
       >
-        <Pressable onPress={handleNavigateToPayments}>
+        <Pressable onPress={handleNavigateToAddVehicle}>
           {/*<Link href="/(add)/payments">*/}
-          <Feather name="credit-card" size={24} color="#CDCDE0" />
+          {/*<Feather name="credit-card" size={24} color="#CDCDE0" />*/}
+
+          <Ionicons name="car-sport" size={32} color="#CDCDE0" />
+
           {/*</Link>*/}
         </Pressable>
       </Animated.View>
