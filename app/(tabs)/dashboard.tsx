@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Dimensions, Image } from "react-native";
+import { ScrollView, Dimensions, Image, Pressable } from "react-native";
 import { SafeAreaView, View, Text } from "@/components/Themed";
 
 import { LineChart, PieChart } from "react-native-chart-kit";
@@ -8,6 +8,7 @@ import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { images } from "../../constants";
+import { router } from "expo-router";
 
 // Example of user data (you can fetch it from Firestore or any backend)
 const user = {
@@ -114,6 +115,21 @@ const Dashboard = () => {
           <Text className="text-[#CDCDE0] text-base mt-2">
             Total mileage: {vehicle.mileage} miles
           </Text>
+
+          {/* Link to Vehicles Route */}
+          <View className="mt-4">
+            <Pressable
+              onPress={() => {
+                router.push("/(tabs)/vehicles");
+              }}
+              className="flex-row items-center justify-center bg-[#FFA001] py-2 px-4 rounded-lg shadow-md"
+            >
+              <Text className="text-black text-lg font-semibold mr-2">
+                View All Vehicles
+              </Text>
+              <Ionicons name="arrow-forward-circle" size={24} color="black" />
+            </Pressable>
+          </View>
         </View>
 
         {/* Fuel Efficiency Line Chart */}
@@ -145,12 +161,27 @@ const Dashboard = () => {
             Recent Activities
           </Text>
           {vehicle.recentActivities.map((activity) => (
-            <View key={activity.id} className="mb-2">
+            <View key={activity.id} className="mb-2 p-3 rounded-xl">
               <Text className="text-[#FFA001] text-base">
                 {activity.activity} - {activity.date}
               </Text>
             </View>
           ))}
+
+          {/* Link to History Route */}
+          <View className="mt-4">
+            <Pressable
+              onPress={() => {
+                router.push("/(tabs)/history");
+              }}
+              className="flex-row items-center justify-center bg-[#FFA001] py-2 px-4 rounded-lg shadow-md"
+            >
+              <Text className="text-black text-lg font-semibold mr-2">
+                View Full History
+              </Text>
+              <Ionicons name="arrow-forward-circle" size={24} color="black" />
+            </Pressable>
+          </View>
         </View>
 
         {/* Service & Maintenance Pie Chart */}
