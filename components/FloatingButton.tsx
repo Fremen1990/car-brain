@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Pressable,
-  StyleSheet,
-  Animated,
-  Dimensions,
-} from "react-native";
+import { Pressable, StyleSheet, Animated, Dimensions } from "react-native";
+import { View } from "@/components/Themed";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
