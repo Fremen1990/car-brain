@@ -9,6 +9,7 @@ interface CustomButtonProps {
   textStyles?: string;
   isLoading?: boolean;
 }
+// TODO refactor this cutton to be animated and to have disabled instead of isLoading
 
 const CustomButton = ({
   title,

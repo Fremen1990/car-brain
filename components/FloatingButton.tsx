@@ -7,7 +7,7 @@ import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router, Link } from "expo-router";
-
+// TODO make slight refactor - low priority
 export const FloatingButton = () => {
   const [icon_1_vertical] = useState(new Animated.Value(-30)); // Vertical animation for icon 1
   const [icon_2_vertical] = useState(new Animated.Value(-30)); // Vertical animation for icon 2
@@ -17,6 +17,8 @@ export const FloatingButton = () => {
   const [icon_3_horizontal] = useState(new Animated.Value(0)); // Horizontal animation for icon 3
 
   const [pop, setPop] = useState(false);
+
+  console.log("POP", pop);
 
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width,
@@ -123,14 +125,17 @@ export const FloatingButton = () => {
   };
 
   const handleNavigateAddToFuel = () => {
+    popOut();
     router.push("/(add)/fuel"); // Navigate to fuel screen in (add) folder
   };
 
   const handleNavigateAddToService = () => {
+    popOut();
     router.push("/(add)/service"); // Navigate to service screen in (add) folder
   };
 
   const handleNavigateToAddVehicle = () => {
+    popOut();
     router.push("/(add)/add-vehicle"); // Navigate to payments screen in (add) folder
   };
 

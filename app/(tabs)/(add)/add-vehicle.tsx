@@ -2,21 +2,23 @@ import React, { useState } from "react";
 import FormField from "@/components/FormField";
 import { Button } from "react-native-paper";
 import { SafeAreaView, View, Text } from "@/components/Themed";
-import { ScrollView, Pressable } from "react-native";
+import { ScrollView, Pressable, Alert } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import BouncyCheckbox from "react-native-bouncy-checkbox/lib";
+import { useForm } from "react-hook-form";
+import { createVehicle } from "@/lib/appwrite";
+import { router } from "expo-router";
 
-export interface Vehicle {
+export interface VehicleFormData {
   brand: string;
   model: string;
-  year: number;
-  mileage: number;
-  vin: string;
+  year: string;
   licensePlate: string;
+  vin: string;
+  mileage: string;
   nextService: string;
   technicalInspectionDate: string;
   insuranceProvider: string;
@@ -24,21 +26,9 @@ export interface Vehicle {
   image: string;
 }
 
-const AddVehicle = () => {
-  const [form, setForm] = useState({
-    brand: "",
-    model: "",
-    year: "",
-    mileage: "",
-    vin: "",
-    licensePlate: "",
-    nextService: "",
-    technicalInspectionDate: "",
-    insuranceProvider: "",
-    insuranceRenewal: "",
-    image: "",
-  });
+// TODO Refactor!!
 
+const AddVehicle = () => {
   const scale = useSharedValue(1); // Shared value for the animation
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -55,32 +45,41 @@ const AddVehicle = () => {
     scale.value = withSpring(1);
   };
 
-  const handleChange = (key: keyof typeof form, value: string | number) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [key]: value,
-    }));
-  };
-  const handleAddVehicle = () => {
-    const newVehicle = {
-      id: Math.random().toString(), // Generate random ID for simplicity // TODO use here apwrite uuid
-      brand: form.brand,
-      model: form.model,
-      year: parseInt(form.year),
-      mileage: parseInt(form.mileage),
-      vin: form.vin,
-      licensePlate: form.licensePlate,
-      nextService: form.nextService,
-      technicalInspectionDate: form.technicalInspectionDate,
-      insuranceProvider: form.insuranceProvider,
-      insuranceRenewal: form.insuranceRenewal,
-    };
+  const onSubmitAddVehicle = async (newVehicle: VehicleFormData) => {
+    try {
+      await createVehicle(newVehicle);
+      router.push("/vehicles"); // Navigate to payments screen in (add) folder
+    } catch (error) {
+      Alert.alert("Error", `Failed to add vehicle! \n ${error}`);
+      console.log("Error", error);
+    }
 
-    console.log("New Vehicle:", newVehicle);
-    // Here you can send the newVehicle data to the backend or Firestore
+    //TODO:  implement functionality to add vehicle image and save it to the storage
+    // add the image url to the vehicle collection
   };
 
-  //TODO: add validation with react-hook-form
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm<VehicleFormData>({
+    defaultValues: {
+      brand: "",
+      model: "",
+      year: "",
+      licensePlate: "",
+      vin: "",
+      mileage: "",
+      nextService: "",
+      technicalInspectionDate: "",
+      insuranceProvider: "",
+      insuranceRenewal: "",
+      image:
+        "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    },
+  });
+
+  console.log("errors", errors);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -93,73 +92,91 @@ const AddVehicle = () => {
           {/* Form Fields */}
           <FormField
             title="Brand"
-            value={form.brand}
             placeholder="Enter vehicle brand"
-            handleChangeText={(value) => handleChange("brand", value)}
+            name="brand"
+            control={control}
+            rules={{ required: "Brand is required" }}
+            errors={errors}
           />
           <FormField
             title="Model"
-            value={form.model}
             placeholder="Enter vehicle model"
-            handleChangeText={(value) => handleChange("model", value)}
+            name="model"
+            control={control}
+            rules={{ required: "Model is required" }}
+            errors={errors}
           />
           <FormField
             title="Year"
-            value={form.year}
             placeholder="Enter year of manufacture"
             keyboardType="numeric"
-            handleChangeText={(value) => handleChange("year", value)}
-          />
-          <FormField
-            title="Mileage"
-            value={form.mileage}
-            placeholder="Enter current mileage"
-            keyboardType="numeric"
-            handleChangeText={(value) => handleChange("mileage", value)}
-          />
-          <FormField
-            title="VIN"
-            value={form.vin}
-            placeholder="Enter VIN number"
-            handleChangeText={(value) => handleChange("vin", value)}
+            name="year"
+            control={control}
+            rules={{ required: "Year is required" }}
+            errors={errors}
           />
           <FormField
             title="License Plate"
-            value={form.licensePlate}
             placeholder="Enter license plate"
-            handleChangeText={(value) => handleChange("licensePlate", value)}
+            name="licensePlate"
+            control={control}
+            rules={{ required: "License Plate is required" }}
+            errors={errors}
+          />
+          <FormField
+            title="VIN"
+            placeholder="Enter VIN number"
+            name="vin"
+            control={control}
+            // rules={{
+            //   // add custom message "VIN need to be 17 characters long"
+            //   minLength: {
+            //     required: false,
+            //     value: 17,
+            //     message: "VIN need to be 17 characters long",
+            //   },
+            // }}
+            errors={errors}
+          />
+          <FormField
+            title="Mileage"
+            placeholder="Enter current mileage"
+            keyboardType="numeric"
+            name="mileage"
+            control={control}
+            errors={errors}
           />
           <FormField
             title="Next Service"
-            value={form.nextService}
             placeholder="Enter next service (e.g., 95,000 miles)"
-            handleChangeText={(value) => handleChange("nextService", value)}
+            name="nextService"
+            control={control}
+            errors={errors}
           />
 
           <FormField
             title="Insurance Provider"
-            value={form.insuranceProvider}
             placeholder="Enter insurance provider"
-            handleChangeText={(value) =>
-              handleChange("insuranceProvider", value)
-            }
+            name="insuranceProvider"
+            control={control}
+            errors={errors}
           />
 
           <FormField
             title="Insurance Renewal Date"
-            value={form.insuranceRenewal}
             placeholder="Enter insurance renewal date (YYYY-MM-DD)"
-            handleChangeText={(value) =>
-              handleChange("insuranceRenewal", value)
-            }
+            name="insuranceRenewal"
+            control={control}
+            errors={errors}
           />
 
           {/* Submit Button */}
+          {/* TODO: Create animated Pressable button (make params to animate or not) */}
           <Animated.View style={[animatedStyle]}>
             <Pressable
               onPressIn={handlePressIn}
               onPressOut={handlePressOut}
-              onPress={handleAddVehicle}
+              onPress={handleSubmit(onSubmitAddVehicle)}
             >
               <Button mode="contained" className="bg-[#FFA001] rounded-lg">
                 Add Vehicle

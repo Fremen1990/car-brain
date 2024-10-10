@@ -8,6 +8,7 @@ import {
   Storage,
 } from "react-native-appwrite";
 import { appwriteConfig } from "@/appwriteConfig";
+import { VehicleFormData } from "@/app/(tabs)/(add)/add-vehicle";
 
 const {
   endpoint,
@@ -111,6 +112,23 @@ export const getCurrentUser = async () => {
     return currentUser.documents[0];
   } catch (error: any) {
     console.log("ERROR FAKTYCZNY ERROR ", error);
+    throw new Error(error);
+  }
+};
+
+// Create new vehicle
+export const createVehicle = async (vehicleFormData: VehicleFormData) => {
+  try {
+    const newVehicle = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.vehicleCollectionId,
+      ID.unique(),
+      {
+        ...vehicleFormData,
+      },
+    );
+    return newVehicle;
+  } catch (error: any) {
     throw new Error(error);
   }
 };
