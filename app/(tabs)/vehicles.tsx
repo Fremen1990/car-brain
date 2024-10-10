@@ -35,7 +35,9 @@ export interface VehicleCardProps {
 }
 
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 const isLargeScreen = screenWidth > 800; // Adjust based on screen size
+const isPortrait = screenHeight > screenWidth;
 
 export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
   console.log("vehicle", vehicle);
@@ -58,6 +60,8 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
     },
   };
 
+  const zoomInZoomOutAnimation = activeItem === vehicle.id ? zoomIn : zoomOut;
+
   console.log("activeItem", activeItem);
   console.log("vehicle.id", vehicle);
 
@@ -65,10 +69,12 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
     <Animatable.View
       className="bg-[#232533] rounded-xl p-4 mb-5 mr-4 shadow-lg shadow-black"
       style={{
-        width: screenWidth * (isLargeScreen ? 0.65 : 0.8), // Adjust card width based on screen size
+        width: !isPortrait
+          ? screenWidth * 0.3
+          : screenWidth * (isLargeScreen ? 0.6 : 0.8), // Adjust card width based on screen size
       }}
-      animation={activeItem === vehicle.id ? zoomIn : zoomOut} // Use the fixed animations
-      duration={400}
+      animation={isPortrait ? zoomInZoomOutAnimation : false} // Use the fixed animations
+      duration={500}
       useNativeDriver={true}
     >
       {/* Vehicle Image */}
@@ -76,7 +82,7 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
         source={vehicle.image}
         className="w-full h-44 rounded-xl"
         style={{
-          height: screenWidth * 0.4, // Dynamic height based on screen size
+          height: screenHeight * (isLargeScreen ? 0.2 : 0.4), // Dynamic height based on screen size
 
           resizeMode: "cover",
         }}
@@ -174,6 +180,8 @@ const Vehicles = () => {
           justifyContent: "space-around",
           alignItems: "center",
           flexGrow: 1,
+          paddingLeft: screenWidth * 0.2, // Adjust to allow items to be centered
+          paddingRight: screenWidth * 0.2, // Add padding to center the last item
         }}
         showsHorizontalScrollIndicator={false}
         snapToAlignment="center"
