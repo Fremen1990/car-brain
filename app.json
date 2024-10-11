@@ -1,44 +1,42 @@
 {
-  "expo": {
-    "name": "car-brain",
-    "slug": "car-brain",
-    "version": "0.1.0",
-    "orientation": "default",
-    "icon": "./assets/images/carBrainIcon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/carBrainLogo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#161622"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": true
-        },
-        "NSCameraUsageDescription": "This app requires access to the camera.",
-        "NSPhotoLibraryUsageDescription": "This app requires access to the photo library."
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/carBrainLogoSmall.png",
-        "backgroundColor": "#161622"
-      },
-      "package": "com.devthomas.carBrain"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/carBrainIcon.png"
-    },
-    "plugins": [
-      "expo-router"
-    ],
-    "experiments": {
-      "typedRoutes": true
-    }
-  }
+	"expo": {
+		"name": "car-brain",
+		"slug": "car-brain",
+		"version": "0.1.0",
+		"orientation": "default",
+		"icon": "./assets/images/carBrainIcon.png",
+		"scheme": "myapp",
+		"userInterfaceStyle": "automatic",
+		"splash": {
+			"image": "./assets/images/carBrainLogo.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#161622"
+		},
+		"ios": {
+			"supportsTablet": true,
+			"infoPlist": {
+				"NSAppTransportSecurity": {
+					"NSAllowsArbitraryLoads": true
+				},
+				"NSCameraUsageDescription": "This app requires access to the camera.",
+				"NSPhotoLibraryUsageDescription": "This app requires access to the photo library."
+			}
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/images/carBrainLogoSmall.png",
+				"backgroundColor": "#161622"
+			},
+			"package": "com.devthomas.carBrain"
+		},
+		"web": {
+			"bundler": "metro",
+			"output": "static",
+			"favicon": "./assets/images/carBrainIcon.png"
+		},
+		"plugins": ["expo-router"],
+		"experiments": {
+			"typedRoutes": true
+		}
+	}
 }

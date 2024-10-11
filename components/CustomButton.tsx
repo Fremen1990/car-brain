@@ -1,37 +1,29 @@
-import React from "react";
+import React from 'react'
 
-import { Text, Pressable } from "react-native";
+import { Text, Pressable } from 'react-native'
 
 interface CustomButtonProps {
-  title: string;
-  handlePress: () => void;
-  containerStyles?: string;
-  textStyles?: string;
-  isLoading?: boolean;
+	title: string
+	handlePress: () => void
+	containerStyles?: string
+	textStyles?: string
+	isLoading?: boolean
 }
 // TODO refactor this cutton to be animated and to have disabled instead of isLoading
 
-const CustomButton = ({
-  title,
-  handlePress,
-  containerStyles,
-  textStyles,
-  isLoading,
-}: CustomButtonProps) => {
-  return (
-    <Pressable
-      onPress={handlePress}
-      className={`bg-secondary rounded-xl min-h-[62px] flex flex-row justify-center items-center ${containerStyles} ${
-        isLoading ? "opacity-30" : ""
-      }
+const CustomButton = ({ title, handlePress, containerStyles, textStyles, isLoading }: CustomButtonProps) => {
+	return (
+		<Pressable
+			onPress={handlePress}
+			className={`bg-secondary rounded-xl min-h-[62px] flex flex-row justify-center items-center ${containerStyles} ${
+				isLoading ? 'opacity-30' : ''
+			}
       `}
-      disabled={isLoading}
-    >
-      <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>
-        {title}
-      </Text>
-    </Pressable>
-  );
-};
+			disabled={isLoading}
+		>
+			<Text className={`text-primary font-psemibold text-lg ${textStyles}`}>{title}</Text>
+		</Pressable>
+	)
+}
 
-export default CustomButton;
+export default CustomButton
