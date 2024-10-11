@@ -12,7 +12,7 @@ export interface VehicleResponse extends VehicleFormData {
 }
 
 const screenWidth = Dimensions.get("window").width;
-
+// TODO: get the vehicle data from the database
 const Vehicles = () => {
   const [activeItem, setActiveItem] = useState(vehicles[0].id);
 

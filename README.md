@@ -14,6 +14,16 @@ Here's a summary of the features and tech stack for your CarBrain app:
 3. **Add many cars (max 2 for free)**
 4. **Add drivers**
 
+
+-----------
+
+- write tests in react native testing library
+
+- write tests in detox for e2e testing - learn detox
+- or 
+- write some tests in appium
+
+
 -------------
 
 1. **Car Service Management**: Track regular car servicing, repairs, and maintenance history.
