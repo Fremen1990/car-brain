@@ -119,12 +119,12 @@ export const FloatingButton = () => {
 
 	const handleNavigateAddToFuel = () => {
 		popOut()
-		router.push('/(add)/fuel') // Navigate to fuel screen in (add) folder
+		router.push('/(add)/add-fuel') // Navigate to fuel screen in (add) folder
 	}
 
 	const handleNavigateAddToService = () => {
 		popOut()
-		router.push('/(add)/service') // Navigate to service screen in (add) folder
+		router.push('/(add)/add-service') // Navigate to service screen in (add) folder
 	}
 
 	const handleNavigateToAddVehicle = () => {

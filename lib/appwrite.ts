@@ -35,7 +35,7 @@ const avatars = new Avatars(client)
 const databases = new Databases(client)
 const storage = new Storage(client)
 
-export const createUser = async ({ username, password, email }: SignUpFormData): Promise<AppwriteUser | undefined> => {
+export const createUser = async ({ username, password, email }: SignUpFormData) => {
 	try {
 		const newAccount = await account.create(ID.unique(), email, password, username)
 

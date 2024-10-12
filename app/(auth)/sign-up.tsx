@@ -35,7 +35,7 @@ const SignUp = () => {
 	const submit = async (newUser: SignUpFormData) => {
 		try {
 			const result = await createUser(newUser)
-			setUser(result)
+			result && setUser(result)
 			setIsLogged(true)
 			router.replace('/dashboard')
 		} catch (error: unknown) {
