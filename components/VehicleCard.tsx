@@ -1,4 +1,4 @@
-import { VehicleResponse } from '@/app/(tabs)/vehicles'
+import { Vehicle } from '@/app/(tabs)/vehicles'
 import * as Animatable from 'react-native-animatable'
 import { Dimensions, Image } from 'react-native'
 import { Text, View } from '@/components/Themed'
@@ -7,8 +7,8 @@ import React from 'react'
 import { ProgressBar, Button } from 'react-native-paper'
 
 export interface VehicleCardProps {
-	vehicle: VehicleResponse
-	activeItem: number
+	vehicle: Vehicle
+	activeItem: string | undefined // Ensure activeItem is a string
 }
 
 // calculate insuranceStatus based on insuranceRenewal and current date
@@ -49,10 +49,12 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 		}
 	}
 
-	const zoomInZoomOutAnimation = activeItem === vehicle.id ? zoomIn : zoomOut
+	const zoomInZoomOutAnimation = activeItem === vehicle.$id ? zoomIn : zoomOut
 
 	console.log('activeItem', activeItem)
-	console.log('vehicle.id', vehicle)
+	console.log('vehicle.id', vehicle.$id)
+
+	console.log('vehicle image', vehicle.image)
 
 	return (
 		<Animatable.View
@@ -66,7 +68,9 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 		>
 			{/* Vehicle Image */}
 			<Image
-				source={vehicle.image}
+				source={{
+					uri: vehicle.image
+				}}
 				className="w-full h-44 rounded-xl"
 				style={{
 					height: screenHeight * (isLargeScreen ? 0.2 : 0.4), // Dynamic height based on screen size
