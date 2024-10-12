@@ -1,12 +1,17 @@
 import { Text, SafeAreaView, View } from '@/components/Themed'
-import { FlatList, ViewToken, Dimensions } from 'react-native'
+import { FlatList, ViewToken, Dimensions, ActivityIndicator, Pressable, Button } from 'react-native'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { VehicleCard } from '@/components/VehicleCard'
 import { VehicleFormData } from '@/app/(tabs)/(add)/add-vehicle'
 import { Models } from 'react-native-appwrite'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { getAllVehicles } from '@/lib/appwrite'
+import useAppwrite from '@/lib/useAppwrite'
+import { router } from 'expo-router'
+import CustomButton from '@/components/CustomButton'
+import { Loader } from '@/components/Loader'
+import { useFocusEffect } from '@react-navigation/core'
 
 export interface Vehicle extends VehicleFormData, Models.Document {
 	accountId: string
@@ -15,14 +20,20 @@ export interface Vehicle extends VehicleFormData, Models.Document {
 }
 
 const screenWidth = Dimensions.get('window').width
-// TODO: get the vehicle data from the database
 const Vehicles = () => {
 	const { user } = useGlobalContext()
-	// console.log('USER', user.$id)
-
-	const [vehicles, setVehicles] = useState<Vehicle[]>([])
-
 	const [activeItem, setActiveItem] = useState<string | undefined>() // Initialize as null
+	const [isDescending, setIsDescending] = useState(true) // Toggle state for sorting
+
+	// Use the `useAppwrite` hook to fetch vehicles from Appwrite
+	const { data: vehicles, loading, refetch } = useAppwrite<Vehicle[]>(() => getAllVehicles(user?.$id || ''))
+
+	// Refetch vehicles when the screen is focused
+	useFocusEffect(
+		React.useCallback(() => {
+			refetch() // Refetch vehicles whenever this screen is focused
+		}, [])
+	)
 
 	const viewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
 		if (viewableItems.length > 0) {
@@ -30,31 +41,38 @@ const Vehicles = () => {
 		}
 	}
 
-	useEffect(() => {
-		const fetchVehicles = async () => {
-			if (!user || !user.$id) {
-				return
-			}
-			const fetchedVehicles = await getAllVehicles(user.$id)
-			setVehicles(fetchedVehicles)
-			if (fetchedVehicles.length > 0) {
-				setActiveItem(fetchedVehicles[0].$id) // Set the first vehicle as active by default
-			}
-		}
+	if (loading) {
+		return <Loader />
+	}
 
-		fetchVehicles()
-	}, [user])
+	if (!vehicles || vehicles.length === 0) {
+		return (
+			<SafeAreaView className="bg-primary h-full items-center justify-center">
+				<Text className="text-white text-center text-xl mb-4">No vehicles found</Text>
+				<CustomButton handlePress={() => router.push('/add-vehicle')} title="Add Vehicle" textStyles="p-4" />
+			</SafeAreaView>
+		)
+	}
 
-	// Log for debugging purposes
-	console.log('VEHICLES', vehicles)
-	console.log('ACTIVE ITEM', activeItem)
+	// Sort vehicles based on isDescending state
+	const sortedVehicles = isDescending ? vehicles.slice().reverse() : vehicles
+
 	return (
 		<SafeAreaView className="bg-primary h-full">
 			<View className="flex-row items-center justify-between w-full p-6">
 				<Text className="text-4xl text-[#FFA001] font-bold">Vehicles</Text>
+				{/* Display sort toggle button only if there are more than one vehicle */}
+				{vehicles.length > 1 && (
+					<Pressable
+						onPress={() => setIsDescending((prev) => !prev)} // Toggle sort order
+						className="bg-[#FFA001] rounded-lg p-2"
+					>
+						<Text className="text-white text-base">{isDescending ? 'Oldest First' : 'Newest First'}</Text>
+					</Pressable>
+				)}
 			</View>
 			<FlatList
-				data={vehicles}
+				data={sortedVehicles}
 				horizontal={true}
 				keyExtractor={(item) => item.$id.toString()}
 				renderItem={({ item }) => <VehicleCard vehicle={item} activeItem={activeItem} />}

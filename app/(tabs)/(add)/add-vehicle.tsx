@@ -2,15 +2,19 @@ import React, { useState } from 'react'
 import FormField from '@/components/FormField'
 import { Button } from 'react-native-paper'
 import { SafeAreaView, View, Text } from '@/components/Themed'
-import { ScrollView, Pressable, Alert, Image } from 'react-native'
+import { ScrollView, Pressable, Alert, Image, ActivityIndicator } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 import { useForm } from 'react-hook-form'
-import { buildFileUrl, createVehicle, saveToStorage } from '@/lib/appwrite'
+import { createVehicle, saveToStorage } from '@/lib/appwrite'
 import { router } from 'expo-router'
 import * as ImagePicker from 'expo-image-picker'
 import { handleAppError } from '@/utils/errorHandler'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import * as ImageManipulator from 'expo-image-manipulator'
+import { Loader } from '@/components/Loader'
+
+const imageCarPlaceholder =
+	'https://cloud.appwrite.io/v1/storage/buckets/670318160038fb727c33/files/670af4e600257e1077e0/view?project=67030cef00029545b6e9&project=67030cef00029545b6e9&mode=admin'
 
 export interface VehicleFormData {
 	brand: string
@@ -26,11 +30,15 @@ export interface VehicleFormData {
 }
 
 export interface VehicleRequestPayload extends VehicleFormData {
-	image: string
+	image: URL | string
 	users: string
 }
 
-// TODO Refactor!!
+export interface ImageData {
+	uri: string
+	name: string
+	type: string
+}
 
 const AddVehicle = () => {
 	const { user } = useGlobalContext()
@@ -39,9 +47,7 @@ const AddVehicle = () => {
 	const [imageFileName, setImageFileName] = useState<string | null>(null)
 	const [imageMimeType, setImageMimeType] = useState<string | null>(null)
 
-	console.log('imageUri', imageUri)
-	console.log('imageFileName', imageFileName)
-	console.log('imageMimeType', imageMimeType)
+	const [isLoading, setIsLoading] = useState(false)
 
 	const animatedStyle = useAnimatedStyle(() => {
 		return {
@@ -100,21 +106,24 @@ const AddVehicle = () => {
 	}
 
 	const onSubmitAddVehicle = async (newVehicle: VehicleFormData) => {
+		setIsLoading(true)
 		try {
 			const uploadedFileUrl = await handleFileUpload()
-			console.log('!!!!!!!!! uploadedFileUrl !!!!!!', uploadedFileUrl)
-
-			const vehicleData = {
-				...newVehicle,
-				users: user?.$id,
-				image:
-					uploadedFileUrl ||
-					'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-			}
-			await createVehicle(vehicleData)
-			router.push('/vehicles') // Navigate to payments screen in (add) folder
+			if (user?.$id !== undefined) {
+				const vehicleData = {
+					...newVehicle,
+					users: user?.$id,
+					image: uploadedFileUrl || imageCarPlaceholder
+				}
+				await createVehicle(vehicleData)
+				router.push('/vehicles')
+			} else {
+				throw new Error('User ID is missing')
+			} // Navigate to payments screen in (add) folder
 		} catch (error: unknown) {
 			handleAppError(error)
+		} finally {
+			setIsLoading(false)
 		}
 	}
 
@@ -136,6 +145,10 @@ const AddVehicle = () => {
 			insuranceRenewal: ''
 		}
 	})
+
+	if (isLoading) {
+		return <Loader />
+	}
 
 	console.log('errors', errors)
 

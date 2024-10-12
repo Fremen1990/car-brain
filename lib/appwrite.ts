@@ -14,7 +14,7 @@ import {
 	UploadProgress
 } from 'react-native-appwrite'
 import { appwriteConfig } from '@/appwriteConfig'
-import { VehicleFormData, VehicleRequestPayload } from '@/app/(tabs)/(add)/add-vehicle'
+import { VehicleRequestPayload } from '@/app/(tabs)/(add)/add-vehicle'
 import { handleAppError } from '@/utils/errorHandler'
 import { SignUpFormData } from '@/app/(auth)/sign-up'
 import { SignInFormData } from '@/app/(auth)/sign-in'
@@ -65,9 +65,7 @@ export const createUser = async ({ username, password, email }: SignUpFormData):
 
 export const signIn = async ({ email, password }: SignInFormData) => {
 	try {
-		const session = await account.createEmailPasswordSession(email, password)
-
-		return session
+		return await account.createEmailPasswordSession(email, password)
 	} catch (error: unknown) {
 		handleAppError(error)
 	}
@@ -83,7 +81,7 @@ export const signOut = async () => {
 	}
 }
 
-export const getCurrentUser = async (): Promise<AppwriteUser | undefined> => {
+export const getCurrentUser = async (): Promise<AppwriteUser | null> => {
 	console.log('GET CURRENT ACCOUNT ')
 	try {
 		const currentAccount = await account.get()
@@ -101,20 +99,15 @@ export const getCurrentUser = async (): Promise<AppwriteUser | undefined> => {
 		return currentUser.documents[0]
 	} catch (error: unknown) {
 		handleAppError(error)
+		return null
 	}
 }
 
 export const createVehicle = async (vehicleFormData: VehicleRequestPayload) => {
 	try {
-		const newVehicle = await databases.createDocument(
-			appwriteConfig.databaseId,
-			appwriteConfig.vehicleCollectionId,
-			ID.unique(),
-			{
-				...vehicleFormData
-			}
-		)
-		return newVehicle
+		return databases.createDocument(appwriteConfig.databaseId, appwriteConfig.vehicleCollectionId, ID.unique(), {
+			...vehicleFormData
+		})
 	} catch (error: unknown) {
 		handleAppError(error)
 	}
@@ -185,23 +178,17 @@ export const getFilePreview = async (fileId: string, type: 'video' | 'image'): P
 	}
 }
 
-export const buildFileUrl = (fileId: string): string => {
-	return `${endpoint}/storage/buckets/${bucketId}/files/${fileId}/view?project=${projectId}&project=${projectId}&mode=admin`
-}
-
 export const getAllVehicles = async (userId: string): Promise<Vehicle[]> => {
 	try {
 		const response = await databases.listDocuments<Vehicle>(
-			appwriteConfig.databaseId, // Replace with your actual database ID
-			appwriteConfig.vehicleCollectionId, // Replace with your actual vehicles collection ID
-			[
-				Query.equal('users', userId) // Filter by the current user's accountId
-			]
+			appwriteConfig.databaseId,
+			appwriteConfig.vehicleCollectionId,
+			[Query.equal('users', userId)]
 		)
 
-		return response.documents // Return the array of vehicle documents
+		return response.documents
 	} catch (error: unknown) {
-		handleAppError(error, true) // Handle errors and show alerts if necessary
+		handleAppError(error, true)
 		return []
 	}
 }

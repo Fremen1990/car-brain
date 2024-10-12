@@ -7,6 +7,7 @@ import bmw from '../assets/images/bmw.jpg'
 import tesla from '../assets/images/tesla.jpg'
 import croma from '../assets/images/croma.jpg'
 import driverAvatar from '../assets/images/diverAvatar.png'
+import carImagePlaceholder from '../assets/images/carImagePlaceholder.png'
 
 export default {
 	carBrainLogo,
@@ -17,5 +18,6 @@ export default {
 	bmw,
 	tesla,
 	croma,
-	driverAvatar
+	driverAvatar,
+	carImagePlaceholder
 }

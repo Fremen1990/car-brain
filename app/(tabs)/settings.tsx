@@ -20,7 +20,7 @@ const Settings = () => {
 	const handleClickSignOut = async () => {
 		console.log('Signing out...')
 		await signOut()
-		setUser(undefined)
+		setUser(null)
 		setIsLogged(false)
 		// router.replace('/sign-in-options')
 		router.replace('/')

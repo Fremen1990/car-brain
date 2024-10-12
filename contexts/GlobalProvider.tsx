@@ -12,8 +12,8 @@ export interface AppwriteUser extends Models.Document {
 }
 
 interface GlobalContextType {
-	user: AppwriteUser | undefined // Update this to just AppwriteUser, not Models.User
-	setUser: (value: AppwriteUser | undefined) => void // Update this type
+	user: AppwriteUser | null // Update this to just AppwriteUser, not Models.User
+	setUser: (value: AppwriteUser | null) => void // Update this type
 	isLogged: boolean
 	setIsLogged: (value: boolean) => void
 	isLoading: boolean
@@ -31,7 +31,7 @@ export const useGlobalContext = () => {
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [isLogged, setIsLogged] = useState(false)
-	const [user, setUser] = useState<AppwriteUser | undefined>() // Update to AppwriteUser
+	const [user, setUser] = useState<AppwriteUser | null>(null) // Start with null for no user
 	const [isLoading, setIsLoading] = useState(true)
 
 	console.log('USER', user)
@@ -46,7 +46,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 					setIsLogged(true)
 				} else {
 					setIsLogged(false)
-					setUser(undefined)
+					setUser(null)
 				}
 			} catch (error: unknown) {
 				handleAppError(error, true)

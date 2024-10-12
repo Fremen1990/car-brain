@@ -28,7 +28,7 @@ const useAppwrite = <T,>(fn: FetchFunction<T>): UseAppwriteReturn<T> => {
 
 	useEffect(() => {
 		fetchData()
-	}, [fetchData])
+	}, [])
 
 	const refetch = async () => fetchData()
 

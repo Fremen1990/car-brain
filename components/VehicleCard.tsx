@@ -28,6 +28,7 @@ const screenHeight = Dimensions.get('window').height
 const isLargeScreen = screenWidth > 800 // Adjust based on screen size
 const isPortrait = screenHeight > screenWidth
 
+// TODO: add button somewhere to nagivate to UPDATE vehicle data via PUT request
 export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 	console.log('vehicle', vehicle)
 
@@ -112,6 +113,7 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 				<Text className="text-white text-base font-bold">
 					Fuel Efficiency: {vehicle.fuelEfficiency} L/100km
 				</Text>
+				{/*TODO: add here additional screens  with fuel and service logs per car with [query] */}
 				<Button
 					mode="outlined"
 					onPress={() => {
