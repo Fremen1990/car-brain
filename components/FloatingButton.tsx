@@ -20,6 +20,7 @@ export const FloatingButton = () => {
 	console.log('POP', pop)
 
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width) // Initial screen width
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [screenHeight, setScreenHeight] = useState(Dimensions.get('window').height) // Initial screen height
 
 	useEffect(() => {
@@ -131,14 +132,19 @@ export const FloatingButton = () => {
 		router.push('/(add)/add-vehicle') // Navigate to payments screen in (add) folder
 	}
 
+	const togglePop = () => {
+		if (!pop) {
+			popIn()
+		} else {
+			popOut()
+		}
+	}
 	return (
 		<View style={styles.container}>
 			{/* Centered Floating Button */}
 			<Pressable
 				style={[styles.circle, { left: screenWidth / 2 - 30, zIndex: 10 }]} // Center the button horizontally
-				onPress={() => {
-					pop === false ? popIn() : popOut()
-				}}
+				onPress={togglePop}
 			>
 				<Ionicons name="add-circle" size={50} color="#CDCDE0" />
 			</Pressable>

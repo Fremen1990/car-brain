@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { images } from '../../constants'
 import CustomButton from '@/components/CustomButton'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 
 const SignInOptions = () => {
 	return (
@@ -16,7 +16,9 @@ const SignInOptions = () => {
 				}}
 			>
 				<View className="w-full h-full justify-center items-center">
-					<Image source={images.carBrainLogo} resizeMode="contain" className="w-[200px] h-[75px]" />
+					<Link href="/">
+						<Image source={images.carBrainLogo} resizeMode="contain" className="w-[200px] h-[75px]" />
+					</Link>
 					<Text className="text-2xl text-white text-semibold mt-10 font-psemibold">Choose login method:</Text>
 
 					<CustomButton

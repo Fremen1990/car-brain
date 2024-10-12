@@ -6,14 +6,25 @@ import { useGlobalContext } from '@/contexts/GlobalProvider'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import moment from 'moment'
 import { images } from '@/constants'
-import React from 'react' // Library to calculate the time since profile creation
+import React from 'react'
+import { signOut } from '@/lib/appwrite'
+import { router } from 'expo-router' // Library to calculate the time since profile creation
 
 const Settings = () => {
-	const { user } = useGlobalContext()
+	const { user, setUser, setIsLogged } = useGlobalContext()
 	const { isDarkMode, toggleTheme } = useTheme()
 
 	// Calculate how long the profile exists
 	const profileAge = user?.$createdAt ? moment(user.$createdAt).fromNow() : 'Unknown'
+
+	const handleClickSignOut = async () => {
+		console.log('Signing out...')
+		await signOut()
+		setUser(undefined)
+		setIsLogged(false)
+		// router.replace('/sign-in-options')
+		router.replace('/')
+	}
 
 	return (
 		<SafeAreaView className="h-full flex-1 bg-primary items-center p-6">
@@ -81,7 +92,10 @@ const Settings = () => {
 				</View>
 
 				{/* Log Out Button */}
-				<Pressable className="flex-row items-center justify-center bg-[#FF6666] py-3 px-6 rounded-lg mt-4">
+				<Pressable
+					className="flex-row items-center justify-center bg-[#FF6666] py-3 px-6 rounded-lg mt-4"
+					onPress={handleClickSignOut}
+				>
 					<Text className="text-white text-lg font-bold mr-2">Log Out</Text>
 					<Ionicons name="log-out-outline" size={24} color="white" />
 				</Pressable>

@@ -1,42 +1,34 @@
 import React from 'react'
 
-import { Image, Text, TextInput, Pressable, View, Animated } from 'react-native'
+import { Image, Text, TextInput, Pressable, View } from 'react-native'
 
 import { icons } from '../constants'
 import { Control } from 'react-hook-form/dist/types/form'
-import { Controller } from 'react-hook-form'
-import { VehicleFormData } from '@/app/(tabs)/(add)/add-vehicle'
+import { Controller, FieldErrors, FieldValues, RegisterOptions, Path } from 'react-hook-form'
 
-interface FormFieldProps {
+interface FormFieldProps<T extends FieldValues> {
 	title: string
-	value?: string
 	placeholder?: string
-	handleChangeText?: (text: string) => void
 	otherStyles?: string
 	keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'
 	// react hook form props
-	name: string
-	control?: Control<VehicleFormData, any>
-	rules?: any
-	errors?: any
+	name: Path<T>
+	control: Control<T>
+	rules?: RegisterOptions<T>
+	errors: FieldErrors<T>
 }
 
-//  TODO refactor this formfield, make it the same reusable in sigh-in and sign-up, remove value and handleChange, use proper type - no ANY
-
-const FormField = ({
+const FormField = <T extends FieldValues>({
 	title,
-	value,
 	placeholder,
-	handleChangeText,
 	otherStyles,
 	keyboardType,
 	name,
 	control,
 	rules,
 	errors
-}: FormFieldProps) => {
+}: FormFieldProps<T>) => {
 	const [showPassword, setShowPassword] = React.useState(false)
-	const fadeAnim = React.useRef(new Animated.Value(0)).current // Animation value for error
 
 	return (
 		<View className={`space-y-2 ${otherStyles}`}>

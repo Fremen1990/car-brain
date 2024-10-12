@@ -6,6 +6,7 @@ import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReactNative from "eslint-plugin-react-native";
 import pluginPrettier from "eslint-plugin-prettier";
+import pluginJest from "eslint-plugin-jest";
 
 export default [
   {
@@ -28,6 +29,8 @@ export default [
       react: pluginReact,
       "react-hooks": pluginReactHooks,
       "react-native": pluginReactNative,
+      jest: pluginJest,
+
     },
     rules: {
       // General ESLint rules
@@ -44,14 +47,34 @@ export default [
       "react-hooks/exhaustive-deps": "warn",
 
       // React Native rules
-      // "react-native/no-unused-styles": "error",
-      // "react-native/split-platform-components": "error",
-      // "react-native/no-inline-styles": "warn",
-      // "react-native/no-color-literals": "error",
+      "react-native/split-platform-components": "error",
       // "react-native/no-raw-text": "error",
+
+      // Jest-specific rules (optional)
+      "jest/no-disabled-tests": "warn",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/prefer-to-have-length": "warn",
+      "jest/valid-expect": "error",
 
       // Prettier integration
       "prettier/prettier": "error", // Ensures prettier issues are shown as ESLint errors
+    },
+  },
+  {
+    // This override applies the Jest environment to test files only
+    files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+    languageOptions: {
+      globals: {
+        ...globals.jest, // Enable Jest globals like `test`, `expect`, etc.
+      },
+    },
+    rules: {
+      "jest/no-disabled-tests": "warn",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/prefer-to-have-length": "warn",
+      "jest/valid-expect": "error",
     },
   },
 ];

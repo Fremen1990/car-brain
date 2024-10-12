@@ -1,5 +1,5 @@
+import React from 'react'
 import { Text, SafeAreaView, View } from '@/components/Themed'
-import FloatingButton from '@/components/FloatingButton'
 
 const Service = () => {
 	return (

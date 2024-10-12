@@ -2,10 +2,18 @@ import React from 'react'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react'
 import { getCurrentUser } from '@/lib/appwrite'
 import { Models } from 'react-native-appwrite'
+import { handleAppError } from '@/utils/errorHandler'
+
+export interface AppwriteUser extends Models.Document {
+	accountId: string
+	avatar: string
+	email: string
+	username: string
+}
 
 interface GlobalContextType {
-	user: any
-	setUser: any
+	user: AppwriteUser | undefined // Update this to just AppwriteUser, not Models.User
+	setUser: (value: AppwriteUser | undefined) => void // Update this type
 	isLogged: boolean
 	setIsLogged: (value: boolean) => void
 	isLoading: boolean
@@ -23,8 +31,10 @@ export const useGlobalContext = () => {
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [isLogged, setIsLogged] = useState(false)
-	const [user, setUser] = useState<Models.Document>()
+	const [user, setUser] = useState<AppwriteUser | undefined>() // Update to AppwriteUser
 	const [isLoading, setIsLoading] = useState(true)
+
+	console.log('USER', user)
 
 	useEffect(() => {
 		;(async () => {
@@ -38,8 +48,8 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 					setIsLogged(false)
 					setUser(undefined)
 				}
-			} catch (error) {
-				console.error(error)
+			} catch (error: unknown) {
+				handleAppError(error, true)
 			} finally {
 				setIsLoading(false)
 			}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ScrollView, Text, View, Image, Alert } from 'react-native'
+import { ScrollView, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { images } from '../../constants'
@@ -9,33 +9,37 @@ import CustomButton from '@/components/CustomButton'
 import { Link, router } from 'expo-router'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { createUser } from '@/lib/appwrite'
+import { handleAppError } from '@/utils/errorHandler'
+import { useForm } from 'react-hook-form'
+import { SignInFormData } from '@/app/(auth)/sign-in'
+
+export interface SignUpFormData extends SignInFormData {
+	username: string
+}
 
 const SignUp = () => {
-	const [form, setForm] = React.useState({
-		username: '',
-		email: '',
-		password: ''
-	})
-
 	const { setUser, setIsLogged } = useGlobalContext()
 
-	const [isSubmitting, setIsSubmitting] = React.useState(false)
-
-	const submit = async () => {
-		if (form.username === '' || form.email === '' || form.password === '') {
-			Alert.alert('Error', 'Please fill in all fields')
+	const {
+		control,
+		handleSubmit,
+		formState: { isValid, errors, isSubmitting }
+	} = useForm<SignUpFormData>({
+		defaultValues: {
+			username: '',
+			email: '',
+			password: ''
 		}
-		setIsSubmitting(true)
+	})
+
+	const submit = async (newUser: SignUpFormData) => {
 		try {
-			const result = await createUser(form.email, form.password, form.username)
+			const result = await createUser(newUser)
 			setUser(result)
 			setIsLogged(true)
-
 			router.replace('/dashboard')
-		} catch (error: any) {
-			Alert.alert('Error', error.message)
-		} finally {
-			setIsSubmitting(false)
+		} catch (error: unknown) {
+			handleAppError(error, true)
 		}
 	}
 
@@ -43,35 +47,52 @@ const SignUp = () => {
 		<SafeAreaView className="bg-primary h-full">
 			<ScrollView>
 				<View className="w-full justify-center min-h-[50vh] px-4">
-					<Image source={images.carBrainLogo} resizeMode="contain" className="w-[115px] h-[60px]" />
+					<Link href="/">
+						<Image source={images.carBrainLogo} resizeMode="contain" className="w-[115px] h-[60px]" />
+					</Link>
 					<Text className="text-2xl text-white text-semibold mt-4 font-psemibold">
 						Sign up to <Text className="text-2xl text-secondary font-bold text-center">Car Brain</Text>
 					</Text>
 					<FormField
 						title={'Username'}
-						value={form.username}
-						handleChangeText={(text: string) => setForm({ ...form, username: text })}
+						name="username"
+						control={control}
+						rules={{ required: 'Username is required' }}
+						errors={errors}
 						otherStyles="mt-10"
 					/>
 					<FormField
 						title={'Email'}
-						value={form.email}
-						handleChangeText={(text: string) => setForm({ ...form, email: text })}
+						name="email"
+						control={control}
+						rules={{
+							// required: 'Email is required',
+							pattern: {
+								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+								message: 'Email required in proper format'
+							}
+						}}
+						errors={errors}
 						otherStyles="mt-7"
 						keyboardType="email-address"
 					/>
 					<FormField
 						title={'Password'}
-						value={form.password}
-						handleChangeText={(text: string) => setForm({ ...form, password: text })}
+						name="password"
+						control={control}
+						rules={{
+							required: 'Password is required',
+							minLength: { value: 8, message: 'Password is too short' }
+						}}
+						errors={errors}
 						otherStyles="mt-7"
 					/>
 
 					<CustomButton
 						title="Sign Up"
-						handlePress={submit}
+						handlePress={handleSubmit(submit)}
 						containerStyles="mt-7"
-						isLoading={form.password.length < 8 || isSubmitting}
+						isLoading={isSubmitting || !isValid}
 					/>
 
 					<View className="justify-center pt-5 flex-row gap-2">

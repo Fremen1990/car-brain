@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Alert } from 'react-native'
+import { useCallback, useEffect, useState } from 'react'
+import { handleAppError } from '@/utils/errorHandler'
 
 interface FetchFunction<T> {
 	(): Promise<T>
@@ -14,18 +14,17 @@ const useAppwrite = <T,>(fn: FetchFunction<T>): UseAppwriteReturn<T> => {
 	const [data, setData] = useState<T | null>(null)
 	const [loading, setLoading] = useState(false)
 
-	const fetchData = async () => {
+	const fetchData = useCallback(async () => {
 		setLoading(true)
 		try {
 			const response = await fn()
 			setData(response)
-		} catch (error: any) {
-			Alert.alert('Error', error.message)
-			console.error('Error fetching data: ', error)
+		} catch (error: unknown) {
+			handleAppError(error, true)
 		} finally {
 			setLoading(false)
 		}
-	}
+	}, [fn])
 
 	useEffect(() => {
 		fetchData()

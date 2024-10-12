@@ -19,7 +19,7 @@ export interface VehicleFormData {
 	technicalInspectionDate: string
 	insuranceProvider: string
 	insuranceRenewal: string
-	image: any
+	image: string
 }
 
 // TODO Refactor!!
