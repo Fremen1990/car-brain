@@ -10,7 +10,7 @@ import { handleAppError } from '@/utils/errorHandler'
 import { router } from 'expo-router'
 import { saveToStorage } from '@/lib/appwrite'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { vehicles } from '@/db/vehicles'
+import { useGlobalContext } from '@/contexts/GlobalProvider'
 
 export interface FuelFormData {
 	vehicleId: string
@@ -21,6 +21,7 @@ export interface FuelFormData {
 }
 
 const AddFuel = () => {
+	const { vehicles } = useGlobalContext()
 	const scale = useSharedValue(1) // Shared value for the animation
 	const [imageUri, setImageUri] = useState<string | null>(null)
 	const [imageFileName, setImageFileName] = useState<string | null>(null)
@@ -60,7 +61,10 @@ const AddFuel = () => {
 			const resizedImage = await ImageManipulator.manipulateAsync(
 				result.assets[0].uri,
 				[{ resize: { width: 300 } }],
-				{ compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+				{
+					compress: 0.7,
+					format: ImageManipulator.SaveFormat.JPEG
+				}
 			)
 
 			setImageUri(resizedImage.uri)
@@ -87,7 +91,10 @@ const AddFuel = () => {
 			const resizedImage = await ImageManipulator.manipulateAsync(
 				result.assets[0].uri,
 				[{ resize: { width: 300 } }],
-				{ compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+				{
+					compress: 0.7,
+					format: ImageManipulator.SaveFormat.JPEG
+				}
 			)
 
 			setImageUri(resizedImage.uri)
@@ -128,7 +135,8 @@ const AddFuel = () => {
 	const {
 		control,
 		handleSubmit,
-		formState: { errors }
+		formState: { errors },
+		setValue
 	} = useForm<FuelFormData>({
 		defaultValues: {
 			vehicleId: '',
@@ -139,38 +147,31 @@ const AddFuel = () => {
 		}
 	})
 
+	const handleSelectVehicle = (selectedVehicleId: string) => {
+		setValue('vehicleId', selectedVehicleId) // Update the selected vehicle ID in the form
+		console.log('Selected Vehicle ID:', selectedVehicleId)
+	}
+
 	return (
 		<SafeAreaView className="bg-primary h-full">
 			<ScrollView contentContainerStyle={{ padding: 16 }}>
 				<View className="space-y-4">
 					<Text className="text-2xl text-white font-bold mb-6">Add Fuel ⛽</Text>
-					{/* Form Fields */}
-					{/*<FormField*/}
-					{/*	title="Vehicle ID"*/}
-					{/*	placeholder="Enter vehicle ID"*/}
-					{/*	name="vehicleId"*/}
-					{/*	control={control}*/}
-					{/*	rules={{ required: 'Vehicle ID is required' }}*/}
-					{/*	errors={errors}*/}
-					{/*/>*/}
 					{/* Vehicle ID Picker - Horizontal FlatList with car image, brand, model, and registration plate */}
 					<View className="my-4">
 						<Text className="text-white text-lg font-bold mb-2">Select Vehicle</Text>
 						<FlatList
 							data={vehicles} // Assume you have a list of vehicles to display
 							horizontal={true}
-							// keyExtractor={(item) => item.$id.toString()}
+							keyExtractor={(item) => item.$id.toString()}
 							renderItem={({ item }) => (
-								<Pressable
-									// onPress={() => handleSelectVehicle(item.$id)}
-									onPress={() => {}}
-								>
+								<Pressable onPress={() => handleSelectVehicle(item.$id)}>
 									<View className="relative mr-4">
 										<Image
-											source={item.image}
-											style={{ width: 150, height: 100, borderRadius: 8 }}
+											source={{ uri: item.image }}
+											style={{ width: 200, height: 150, borderRadius: 8 }}
 										/>
-										<View className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-2">
+										<View className="absolute bottom-0 left-0 right-0 bg-black opacity-70 p-2">
 											<Text className="text-white font-bold">
 												{item.brand} {item.model}
 											</Text>

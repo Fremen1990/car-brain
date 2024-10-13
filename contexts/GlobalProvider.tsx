@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react'
-import { getCurrentUser } from '@/lib/appwrite'
+import { getAllVehicles, getCurrentUser } from '@/lib/appwrite'
 import { Models } from 'react-native-appwrite'
 import { handleAppError } from '@/utils/errorHandler'
 
@@ -11,12 +11,24 @@ export interface AppwriteUser extends Models.Document {
 	username: string
 }
 
+export interface Vehicle extends Models.Document {
+	accountId: string
+	image: string
+	brand: string
+	model: string
+	licensePlate: string
+	fuelEfficiency: number
+}
+
 interface GlobalContextType {
 	user: AppwriteUser | null // Update this to just AppwriteUser, not Models.User
 	setUser: (value: AppwriteUser | null) => void // Update this type
 	isLogged: boolean
 	setIsLogged: (value: boolean) => void
-	isLoading: boolean
+	isLoadingGetCurrentUser: boolean
+	vehicles: Vehicle[] | null
+	isLoadingVehicles: boolean
+	refetchVehicles: () => void
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
@@ -32,17 +44,39 @@ export const useGlobalContext = () => {
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [isLogged, setIsLogged] = useState(false)
 	const [user, setUser] = useState<AppwriteUser | null>(null) // Start with null for no user
-	const [isLoading, setIsLoading] = useState(true)
+	const [isLoadingGetCurrentUser, setIsLoadingGetCurrentUser] = useState(true)
 
-	console.log('USER', user)
+	// Vehicles state
+	const [vehicles, setVehicles] = useState<Vehicle[] | null>(null)
+	const [isLoadingVehicles, setIsLoadingVehicles] = useState(false)
 
+	// Function to fetch vehicles for the current user
+	const fetchVehicles = useCallback(async () => {
+		if (user) {
+			setIsLoadingVehicles(true)
+			try {
+				const fetchedVehicles = await getAllVehicles(user.$id)
+				setVehicles(fetchedVehicles)
+			} catch (error: unknown) {
+				handleAppError(error)
+			} finally {
+				setIsLoadingVehicles(false)
+			}
+		}
+	}, [user])
+
+	// Refetch vehicles
+	const refetchVehicles = useCallback(() => {
+		fetchVehicles()
+	}, [fetchVehicles])
+
+	// Fetch current user on mount
 	useEffect(() => {
 		;(async () => {
 			try {
 				const response = await getCurrentUser()
 				if (response) {
 					setUser(response)
-					console.log(' GET USER', response)
 					setIsLogged(true)
 				} else {
 					setIsLogged(false)
@@ -51,13 +85,31 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 			} catch (error: unknown) {
 				handleAppError(error, true)
 			} finally {
-				setIsLoading(false)
+				setIsLoadingGetCurrentUser(false)
 			}
-		})() // IIFE to handle async code in useEffect
+		})()
 	}, [])
 
+	// Fetch vehicles when user changes
+	useEffect(() => {
+		if (user) {
+			fetchVehicles()
+		}
+	}, [fetchVehicles, user])
+
 	return (
-		<GlobalContext.Provider value={{ isLogged, setIsLogged, user, setUser, isLoading }}>
+		<GlobalContext.Provider
+			value={{
+				isLogged,
+				setIsLogged,
+				user,
+				setUser,
+				isLoadingGetCurrentUser,
+				vehicles,
+				isLoadingVehicles,
+				refetchVehicles
+			}}
+		>
 			{children}
 		</GlobalContext.Provider>
 	)
