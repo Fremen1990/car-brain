@@ -86,8 +86,8 @@ const Vehicles = () => {
 					justifyContent: 'space-around',
 					alignItems: 'center',
 					flexGrow: 1,
-					paddingLeft: screenWidth * 0.2, // Adjust to allow items to be centered
-					paddingRight: screenWidth * 0.2 // Add padding to center the last item
+					paddingLeft: screenWidth * 0.1, // Adjust to allow items to be centered
+					paddingRight: screenWidth * 0.1 // Add padding to center the last item
 				}}
 				showsHorizontalScrollIndicator={false}
 				snapToAlignment="center"

@@ -61,9 +61,11 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 		<Animatable.View
 			className="bg-[#232533] rounded-xl p-4 mb-5 mr-4 shadow-lg shadow-black"
 			style={{
-				width: !isPortrait ? screenWidth * 0.3 : screenWidth * (isLargeScreen ? 0.6 : 0.8) // Adjust card width based on screen size
+				width: !isPortrait ? screenWidth * 0.25 : screenWidth * (isLargeScreen ? 0.4 : 0.6) // Reduced card width
 			}}
-			animation={isPortrait ? zoomInZoomOutAnimation : false} // Use the fixed animations
+			// TODO: fix this animation to be in the middle
+			// animation={isPortrait ? zoomInZoomOutAnimation : false} // Use the fixed animations
+			animation={false} // Use the fixed animations
 			duration={500}
 			useNativeDriver={true}
 		>
@@ -74,7 +76,7 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 				}}
 				className="w-full h-44 rounded-xl"
 				style={{
-					height: screenHeight * (isLargeScreen ? 0.2 : 0.4), // Dynamic height based on screen size
+					height: screenHeight * (isLargeScreen ? 0.1 : 0.3), // Dynamic height based on screen size
 
 					resizeMode: 'cover'
 				}}
