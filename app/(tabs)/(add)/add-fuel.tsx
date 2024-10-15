@@ -8,19 +8,30 @@ import * as ImagePicker from 'expo-image-picker'
 import * as ImageManipulator from 'expo-image-manipulator'
 import { handleAppError } from '@/utils/errorHandler'
 import { router } from 'expo-router'
-import { saveToStorage } from '@/lib/appwrite'
+import { addFuelRecord, saveToStorage } from '@/lib/appwrite'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
+import { Loader } from '@/components/Loader'
 
 export interface FuelFormData {
 	vehicleId: string
-	date: string
-	odometer: string
-	liters: string
-	price: string
+	userId: string
+	date: Date
+	mileage: number
+	fuelAmount: number
+	price: number
+	cost: number
+	fuelType: string
+	currency: string
 }
 
+// TODO: refactor to use one component to upload photos and take photos  and reuse in add-vehicle and add-fuel
+// TODO: refactor to use onSubmit custom hook to handle form submission reusable
+// TODO: Write integration tests for add-fuel and add-vehicle with MSW and react native testing library
+// TODO: refactor add-fuel and add-vehicle to separated reusable components like image picker and form fields
+
 const AddFuel = () => {
+	const { user } = useGlobalContext()
 	const { vehicles } = useGlobalContext()
 	const scale = useSharedValue(1) // Shared value for the animation
 	const [imageUri, setImageUri] = useState<string | null>(null)
@@ -114,17 +125,41 @@ const AddFuel = () => {
 		}
 	}
 
+	console.log('user', user?.$id)
+
 	const onSubmitAddFuel = async (newFuel: FuelFormData) => {
 		setIsLoading(true)
+
+		console.log('newFuel SUBMIT OUT OF TRY CATCH', newFuel)
 		try {
 			const uploadedFileUrl = await handleFileUpload()
-			const fuelData = {
-				...newFuel,
-				billImage: uploadedFileUrl || null
-			}
-			// Send fuelData to database
-			console.log('Fuel data:', fuelData)
-			// router.push('/fuel-logs') // Redirect after adding fuel log
+
+			console.log('uploadedFileUrl', uploadedFileUrl)
+
+			if (user?.$id !== undefined) {
+				// Explicitly convert string inputs to the correct data types
+				const fuelData = {
+					...newFuel,
+					userId: user?.$id,
+					date: new Date(newFuel.date), // Ensure date is in correct format
+					price: parseFloat(String(newFuel.price)), // Convert to float
+					fuelAmount: parseFloat(String(newFuel.fuelAmount)), // Convert to float
+					cost: parseFloat(String(newFuel.cost)), // Convert to float
+					mileage: parseInt(String(newFuel.mileage), 10), // Convert to integer
+					attachments: uploadedFileUrl || null
+				}
+
+				await addFuelRecord(fuelData)
+				// Send fuelData to database
+				console.log('Fuel data:', fuelData)
+
+				reset() // Reset the form after submission
+				router.push('/') // Redirect after adding fuel log
+
+				// router.push('/fuel-logs') // Redirect after adding fuel log}
+			} else {
+				throw new Error('User ID is missing')
+			} // Navigate to payments screen in (add) folder
 		} catch (error: unknown) {
 			handleAppError(error)
 		} finally {
@@ -136,20 +171,30 @@ const AddFuel = () => {
 		control,
 		handleSubmit,
 		formState: { errors },
-		setValue
+		setValue,
+		watch,
+		reset
 	} = useForm<FuelFormData>({
 		defaultValues: {
 			vehicleId: '',
-			date: '',
-			odometer: '',
-			liters: '',
-			price: ''
+			date: new Date(),
+			price: 0,
+			fuelAmount: 0,
+			cost: 0,
+			fuelType: 'petrol',
+			currency: 'PLN',
+			mileage: 0
 		}
 	})
 
 	const handleSelectVehicle = (selectedVehicleId: string) => {
-		setValue('vehicleId', selectedVehicleId) // Update the selected vehicle ID in the form
-		console.log('Selected Vehicle ID:', selectedVehicleId)
+		setValue('vehicleId', selectedVehicleId) // Set the selected vehicle ID in form
+	}
+
+	const selectedVehicleId = watch('vehicleId') // Use `watch` to track vehicleId in real-time
+
+	if (isLoading) {
+		return <Loader />
 	}
 
 	return (
@@ -157,16 +202,23 @@ const AddFuel = () => {
 			<ScrollView contentContainerStyle={{ padding: 16 }}>
 				<View className="space-y-4">
 					<Text className="text-2xl text-white font-bold mb-6">Add Fuel ⛽</Text>
-					{/* Vehicle ID Picker - Horizontal FlatList with car image, brand, model, and registration plate */}
-					<View className="my-4">
-						<Text className="text-white text-lg font-bold mb-2">Select Vehicle</Text>
-						<FlatList
-							data={vehicles} // Assume you have a list of vehicles to display
-							horizontal={true}
-							keyExtractor={(item) => item.$id.toString()}
-							renderItem={({ item }) => (
+
+					{/* Vehicle ID Picker */}
+					<FlatList
+						data={vehicles}
+						horizontal={true}
+						keyExtractor={(item) => item.$id.toString()}
+						renderItem={({ item }) => {
+							return (
 								<Pressable onPress={() => handleSelectVehicle(item.$id)}>
-									<View className="relative mr-4">
+									<View
+										className="relative mr-4"
+										style={{
+											borderColor: selectedVehicleId === item.$id ? '#FFA001' : 'transparent', // Highlight selected vehicle
+											borderWidth: 2,
+											borderRadius: 8
+										}}
+									>
 										<Image
 											source={{ uri: item.image }}
 											style={{ width: 200, height: 150, borderRadius: 8 }}
@@ -179,46 +231,96 @@ const AddFuel = () => {
 										</View>
 									</View>
 								</Pressable>
-							)}
-							showsHorizontalScrollIndicator={false}
-							contentContainerStyle={{
-								paddingHorizontal: 16,
-								alignItems: 'center'
-							}}
-						/>
-					</View>
+							)
+						}}
+						showsHorizontalScrollIndicator={false}
+						contentContainerStyle={{
+							paddingHorizontal: 16,
+							alignItems: 'center'
+						}}
+					/>
+
 					<FormField
 						title="Date"
-						placeholder="Enter the date"
+						placeholder="Select date"
 						name="date"
 						control={control}
-						rules={{ required: 'Date is required' }}
+						rules={{ required: 'Date is required', valueAsDate: true }}
 						errors={errors}
+						date // Enable the date picker functionality
 					/>
-					<FormField
-						title="Odometer"
-						placeholder="Enter current odometer reading"
-						name="odometer"
-						control={control}
-						keyboardType="numeric"
-						errors={errors}
-					/>
+
 					<FormField
 						title="Liters"
 						placeholder="Enter the amount of fuel"
-						name="liters"
+						name="fuelAmount"
 						control={control}
 						keyboardType="numeric"
+						rules={{
+							required: 'Amount of fuel is required',
+							valueAsNumber: true,
+							min: { value: 1, message: 'Fuel amount must be greater than 0' }
+						}}
 						errors={errors}
 					/>
+
 					<FormField
-						title="Price"
-						placeholder="Enter fuel price"
+						title="Price per Liter"
+						placeholder="Enter price per liter"
 						name="price"
 						control={control}
 						keyboardType="numeric"
+						rules={{ required: 'Price per liter is required', valueAsNumber: true, min: 0.01 }}
 						errors={errors}
 					/>
+
+					{/*TODO: implement calculation Total cost from liters and price and setValue to react hook form*/}
+					<FormField
+						title="Total cost"
+						placeholder="Enter total cost"
+						name="cost"
+						control={control}
+						keyboardType="numeric"
+						errors={errors}
+					/>
+
+					<FormField
+						title="Currency"
+						name="currency"
+						control={control}
+						select={true} // Render as a dropdown
+						options={[
+							{ label: 'USD', value: 'USD' },
+							{ label: 'EUR', value: 'EUR' },
+							{ label: 'PLN', value: 'PLN' }
+						]}
+						errors={errors}
+					/>
+
+					<FormField
+						title="Fuel Type"
+						name="fuelType"
+						control={control}
+						select={true} // Render as a dropdown
+						options={[
+							{ label: 'Petrol', value: 'petrol' },
+							{ label: 'Diesel', value: 'diesel' },
+							{ label: 'Electric', value: 'electric' },
+							{ label: 'Hybrid', value: 'hybrid' }
+						]}
+						errors={errors}
+					/>
+
+					<FormField
+						title="Odometer"
+						placeholder="Enter current mileage reading"
+						name="mileage"
+						control={control}
+						keyboardType="numeric"
+						rules={{ required: 'Mileage reading is required', valueAsNumber: true, min: 1 }}
+						errors={errors}
+					/>
+
 					{/* Image Picker and Photo Buttons */}
 					<View className="flex-row justify-center space-x-3">
 						<Pressable onPress={pickImage}>
@@ -237,13 +339,14 @@ const AddFuel = () => {
 							</View>
 						</Pressable>
 
-						<Pressable onPress={takePhoto} className="">
+						<Pressable onPress={takePhoto}>
 							<View className="w-40 h-40 bg-gray-200 rounded-lg items-center justify-center">
 								<Ionicons name="camera-outline" size={32} color="gray" />
 								<Text className="text-gray-500">Take Photo of Bill</Text>
 							</View>
 						</Pressable>
 					</View>
+
 					{/* Submit Button */}
 					<Animated.View style={[animatedStyle]}>
 						<Pressable

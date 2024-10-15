@@ -20,6 +20,7 @@ import { SignUpFormData } from '@/app/(auth)/sign-up'
 import { SignInFormData } from '@/app/(auth)/sign-in'
 import { AppwriteUser } from '@/contexts/GlobalProvider'
 import { Vehicle } from '@/app/(tabs)/vehicles'
+import { FuelFormData } from '@/app/(tabs)/(add)/add-fuel'
 
 const { endpoint, platform, projectId, userCollectionId, databaseId, bucketId } = appwriteConfig
 
@@ -190,5 +191,21 @@ export const getAllVehicles = async (userId: string): Promise<Vehicle[]> => {
 	} catch (error: unknown) {
 		handleAppError(error, true)
 		return []
+	}
+}
+
+export const addFuelRecord = async (fuelData: FuelFormData) => {
+	try {
+		const response = await databases.createDocument(
+			appwriteConfig.databaseId,
+			appwriteConfig.fuelRecordsCollectionId,
+			ID.unique(),
+			{
+				...fuelData
+			}
+		)
+		return response.documents
+	} catch (error: unknown) {
+		handleAppError(error)
 	}
 }
