@@ -84,7 +84,7 @@ const CustomImagePicker: React.FC<ImagePickerComponentProps> = ({ onImageSelecte
 					) : (
 						<View className="w-40 h-40 bg-gray-200 rounded-lg items-center justify-center">
 							<Ionicons name="cloud-upload-outline" size={32} color="gray" />
-							<Text className="text-gray-500">Upload Bill Image</Text>
+							<Text className="text-gray-500">Upload Image</Text>
 						</View>
 					)}
 				</View>
@@ -93,7 +93,7 @@ const CustomImagePicker: React.FC<ImagePickerComponentProps> = ({ onImageSelecte
 			<Pressable onPress={takePhoto}>
 				<View className="w-40 h-40 bg-gray-200 rounded-lg items-center justify-center">
 					<Ionicons name="camera-outline" size={32} color="gray" />
-					<Text className="text-gray-500">Take Photo of Bill</Text>
+					<Text className="text-gray-500">Take Photo</Text>
 				</View>
 			</Pressable>
 		</View>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
-import { Image, Text, TextInput, Pressable, View, Button } from 'react-native'
+import { Image, Text, TextInput, Pressable, View } from 'react-native'
 
-import { icons } from '../constants'
+import { ICONS } from '../constants'
 import { Control } from 'react-hook-form/dist/types/form'
 import { Controller, FieldErrors, FieldValues, RegisterOptions, Path } from 'react-hook-form'
 import { Picker } from '@react-native-picker/picker'
@@ -119,7 +119,7 @@ const FormField = <T extends FieldValues>({
 				{title === 'Password' && (
 					<Pressable onPress={() => setShowPassword(!showPassword)}>
 						<Image
-							source={!showPassword ? icons.eye : icons.eyeHide}
+							source={!showPassword ? ICONS.eye : ICONS.eyeHide}
 							className="w-6 h-6"
 							resizeMode="contain"
 						/>

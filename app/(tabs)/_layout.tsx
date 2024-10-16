@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
 
-import { icons } from '../../constants'
+import { ICONS } from '../../constants'
 import { ImageProps, Image } from 'react-native'
 import { View, Text } from '@/components/Themed'
 import FloatingButton from '@/components/FloatingButton'
@@ -49,7 +49,7 @@ const TabsLayout = () => {
 						title: 'Dashboard',
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<TabIcon icon={icons.dashboard} color={color} name="dashboard" focused={focused} />
+							<TabIcon icon={ICONS.dashboard} color={color} name="dashboard" focused={focused} />
 						)
 					}}
 				/>
@@ -60,7 +60,7 @@ const TabsLayout = () => {
 						title: 'History',
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<TabIcon icon={icons.history} color={color} name="history" focused={focused} />
+							<TabIcon icon={ICONS.history} color={color} name="history" focused={focused} />
 						)
 					}}
 				/>
@@ -89,7 +89,7 @@ const TabsLayout = () => {
 						title: 'Vehicles',
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<TabIcon icon={icons.vehicle} color={color} name="vehicles" focused={focused} />
+							<TabIcon icon={ICONS.vehicle} color={color} name="vehicles" focused={focused} />
 						)
 					}}
 				/>
@@ -100,7 +100,7 @@ const TabsLayout = () => {
 						title: 'Settings',
 						headerShown: false,
 						tabBarIcon: ({ color, focused }) => (
-							<TabIcon icon={icons.settings} color={color} name="settings" focused={focused} />
+							<TabIcon icon={ICONS.settings} color={color} name="settings" focused={focused} />
 						)
 					}}
 				/>

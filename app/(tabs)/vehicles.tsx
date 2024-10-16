@@ -1,10 +1,8 @@
 import { Text, SafeAreaView, View } from '@/components/Themed'
-import { FlatList, ViewToken, Dimensions, ActivityIndicator, Pressable, Button } from 'react-native'
+import { FlatList, ViewToken, Dimensions, Pressable } from 'react-native'
 
 import React, { useState } from 'react'
 import { VehicleCard } from '@/components/VehicleCard'
-import { VehicleFormData } from '@/app/(tabs)/(add)/add-vehicle'
-import { Models } from 'react-native-appwrite'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { getAllVehicles } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
@@ -12,12 +10,7 @@ import { router } from 'expo-router'
 import CustomButton from '@/components/CustomButton'
 import { Loader } from '@/components/Loader'
 import { useFocusEffect } from '@react-navigation/core'
-
-export interface Vehicle extends VehicleFormData, Models.Document {
-	accountId: string
-	image: string
-	fuelEfficiency: number
-}
+import { Vehicle } from '@/types/VehicleTypes'
 
 const screenWidth = Dimensions.get('window').width
 const Vehicles = () => {

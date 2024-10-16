@@ -3,7 +3,7 @@ import React from 'react'
 import { ScrollView, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { images } from '../../constants'
+import { DEFAULT_USER_SIGN_IN_FORM_VALUES, IMAGES } from '../../constants'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
 import { Link, router } from 'expo-router'
@@ -11,11 +11,7 @@ import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { getCurrentUser, signIn } from '@/lib/appwrite'
 import { handleAppError } from '@/utils/errorHandler'
 import { useForm } from 'react-hook-form'
-
-export interface SignInFormData {
-	email: string
-	password: string
-}
+import { SignInFormData } from '@/types/UserTypes'
 
 const SignIn = () => {
 	const { setUser, setIsLogged } = useGlobalContext()
@@ -25,10 +21,7 @@ const SignIn = () => {
 		handleSubmit,
 		formState: { isValid, errors, isSubmitting }
 	} = useForm<SignInFormData>({
-		defaultValues: {
-			email: '',
-			password: ''
-		}
+		defaultValues: DEFAULT_USER_SIGN_IN_FORM_VALUES
 	})
 
 	console.log('isValid', isValid)
@@ -50,7 +43,7 @@ const SignIn = () => {
 			<ScrollView>
 				<View className="w-full justify-center min-h-[50vh] px-4">
 					<Link href="/">
-						<Image source={images.carBrainLogo} resizeMode="contain" className="w-[115px] h-[60px]" />
+						<Image source={IMAGES.carBrainLogo} resizeMode="contain" className="w-[115px] h-[60px]" />
 					</Link>
 					<Text className="text-2xl text-white text-semibold mt-4 font-psemibold">
 						Log in to <Text className="text-2xl text-secondary font-bold text-center">Car Brain</Text>

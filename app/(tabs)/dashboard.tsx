@@ -6,13 +6,13 @@ import { LineChart, PieChart } from 'react-native-chart-kit'
 import { StatusBar } from 'expo-status-bar'
 import Ionicons from '@expo/vector-icons/Ionicons'
 
-import { images } from '../../constants'
+import { IMAGES } from '../../constants'
 import { router } from 'expo-router'
 
 // Example of user data (you can fetch it from Firestore or any backend)
 const user = {
 	username: 'JohnDoe',
-	avatar: images.driverAvatar // Path to user avatar image
+	avatar: IMAGES.driverAvatar // Path to user avatar image
 }
 
 const screenWidth = Dimensions.get('window').width
@@ -85,7 +85,7 @@ const Dashboard = () => {
 				<View className="flex-row items-center bg-gradient-to-r from-[#1E1E2C] to-[#232533] rounded-xl p-4 mb-6 shadow-lg w-full justify-center">
 					{/* User Avatar */}
 					<Image
-						source={images.driverAvatar}
+						source={IMAGES.driverAvatar}
 						className="w-16 h-16 rounded-full border-2 border-[#FFA001] mr-4"
 						resizeMode="contain"
 						tintColor={'#FFA001'}

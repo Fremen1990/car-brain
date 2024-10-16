@@ -1,4 +1,21 @@
-import icons from './icons'
-import images from './images'
+import ICONS from './icons'
+import IMAGES from './images'
+import {
+	DEFAULT_USER_SIGN_IN_FORM_VALUES,
+	DEFAULT_USER_SIGN_UP_FORM_VALUES,
+	CURRENCY_OPTIONS,
+	FUEL_TYPE_OPTIONS,
+	DEFAULT_FUEL_FORM_VALUES,
+	DEFAULT_VEHICLE_FORM_VALUES
+} from './formConstants'
 
-export { icons, images }
+export {
+	ICONS,
+	IMAGES,
+	DEFAULT_USER_SIGN_IN_FORM_VALUES,
+	DEFAULT_USER_SIGN_UP_FORM_VALUES,
+	CURRENCY_OPTIONS,
+	FUEL_TYPE_OPTIONS,
+	DEFAULT_VEHICLE_FORM_VALUES,
+	DEFAULT_FUEL_FORM_VALUES
+}

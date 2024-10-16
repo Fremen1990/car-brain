@@ -3,7 +3,7 @@ import React from 'react'
 import { ScrollView, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { images } from '../../constants'
+import { DEFAULT_USER_SIGN_UP_FORM_VALUES, IMAGES } from '../../constants'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton'
 import { Link, router } from 'expo-router'
@@ -11,11 +11,7 @@ import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { createUser } from '@/lib/appwrite'
 import { handleAppError } from '@/utils/errorHandler'
 import { useForm } from 'react-hook-form'
-import { SignInFormData } from '@/app/(auth)/sign-in'
-
-export interface SignUpFormData extends SignInFormData {
-	username: string
-}
+import { SignUpFormData } from '@/types/UserTypes'
 
 const SignUp = () => {
 	const { setUser, setIsLogged } = useGlobalContext()
@@ -25,11 +21,7 @@ const SignUp = () => {
 		handleSubmit,
 		formState: { isValid, errors, isSubmitting }
 	} = useForm<SignUpFormData>({
-		defaultValues: {
-			username: '',
-			email: '',
-			password: ''
-		}
+		defaultValues: DEFAULT_USER_SIGN_UP_FORM_VALUES
 	})
 
 	const submit = async (newUser: SignUpFormData) => {
@@ -48,7 +40,7 @@ const SignUp = () => {
 			<ScrollView>
 				<View className="w-full justify-center min-h-[50vh] px-4">
 					<Link href="/">
-						<Image source={images.carBrainLogo} resizeMode="contain" className="w-[115px] h-[60px]" />
+						<Image source={IMAGES.carBrainLogo} resizeMode="contain" className="w-[115px] h-[60px]" />
 					</Link>
 					<Text className="text-2xl text-white text-semibold mt-4 font-psemibold">
 						Sign up to <Text className="text-2xl text-secondary font-bold text-center">Car Brain</Text>

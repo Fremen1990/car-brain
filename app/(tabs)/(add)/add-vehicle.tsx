@@ -1,117 +1,51 @@
-import React, { useState } from 'react'
+import React from 'react'
 import FormField from '@/components/FormField'
-import { Button } from 'react-native-paper'
 import { SafeAreaView, View, Text } from '@/components/Themed'
-import { ScrollView, Pressable } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
+import { ScrollView } from 'react-native'
 import { useForm } from 'react-hook-form'
-import { createVehicle, saveToStorage } from '@/lib/appwrite'
+import { createVehicle } from '@/lib/appwrite'
 import { router } from 'expo-router'
-import { handleAppError } from '@/utils/errorHandler'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { Loader } from '@/components/Loader'
 import CustomImagePicker from '@/components/CustomImagePicker'
 import CustomButton from '@/components/CustomButton'
-
-const imageCarPlaceholder =
-	'https://cloud.appwrite.io/v1/storage/buckets/670318160038fb727c33/files/670af4e600257e1077e0/view?project=67030cef00029545b6e9&project=67030cef00029545b6e9&mode=admin'
-
-export interface VehicleFormData {
-	brand: string
-	model: string
-	year: string
-	licensePlate: string
-	vin: string
-	mileage: string
-	nextService: string
-	technicalInspectionDate: string
-	insuranceProvider: string
-	insuranceRenewal: string
-}
-
-export interface VehicleRequestPayload extends VehicleFormData {
-	image: URL | string
-	users: string
-}
-
-export interface ImageData {
-	uri: string
-	name: string
-	type: string
-}
+import { DEFAULT_VEHICLE_FORM_VALUES } from '@/constants'
+import { useFormSubmit } from '@/hooks/useFormSubmit'
+import { DEFAULT_VEHICLE_IMAGE_URL } from '@/constants/formConstants'
+import { VehicleFormData } from '@/types/VehicleTypes'
 
 const AddVehicle = () => {
 	const { user } = useGlobalContext()
-	const scale = useSharedValue(1) // Shared value for the animation
-	const [imageUri, setImageUri] = useState<string | null>(null)
-	const [imageFileName, setImageFileName] = useState<string | null>(null)
-	const [imageMimeType, setImageMimeType] = useState<string | null>(null)
-
-	const handleImageSelected = (uri: string, fileName: string, mimeType: string) => {
-		setImageUri(uri)
-		setImageFileName(fileName)
-		setImageMimeType(mimeType)
-	}
-
-	const [isLoading, setIsLoading] = useState(false)
-
-	// File upload handler
-	const handleFileUpload = async () => {
-		if (!imageUri || !imageFileName || !imageMimeType) return null
-		try {
-			return await saveToStorage(imageUri, imageFileName, imageMimeType)
-		} catch (error: unknown) {
-			handleAppError(error)
-			return null
-		}
-	}
-
-	const onSubmitAddVehicle = async (newVehicle: VehicleFormData) => {
-		setIsLoading(true)
-		try {
-			const uploadedFileUrl = await handleFileUpload()
-			if (user?.$id !== undefined) {
-				const vehicleData = {
-					...newVehicle,
-					users: user?.$id,
-					image: uploadedFileUrl || imageCarPlaceholder
-				}
-				await createVehicle(vehicleData)
-				router.push('/vehicles')
-			} else {
-				throw new Error('User ID is missing')
-			} // Navigate to payments screen in (add) folder
-		} catch (error: unknown) {
-			handleAppError(error)
-		} finally {
-			setIsLoading(false)
-		}
-	}
 
 	const {
 		control,
 		handleSubmit,
-		formState: { errors }
+		formState: { errors },
+		reset
 	} = useForm<VehicleFormData>({
-		defaultValues: {
-			brand: '',
-			model: '',
-			year: '',
-			licensePlate: '',
-			vin: '',
-			mileage: '',
-			nextService: '',
-			technicalInspectionDate: '',
-			insuranceProvider: '',
-			insuranceRenewal: ''
-		}
+		defaultValues: DEFAULT_VEHICLE_FORM_VALUES
+	})
+
+	const { submitForm, isLoading, handleImageSelected } = useFormSubmit<VehicleFormData>({
+		onSubmit: async (newVehicle: VehicleFormData) => {
+			if (user?.$id) {
+				const vehicleData = {
+					...newVehicle,
+					users: user.$id
+				}
+				await createVehicle(vehicleData)
+				reset()
+				router.push('/vehicles')
+			} else {
+				throw new Error('User ID is missing')
+			}
+		},
+		defaultImageUrl: DEFAULT_VEHICLE_IMAGE_URL
 	})
 
 	if (isLoading) {
 		return <Loader />
 	}
-
-	console.log('errors', errors)
 
 	return (
 		<SafeAreaView className="bg-primary h-full">
@@ -203,11 +137,7 @@ const AddVehicle = () => {
 						errors={errors}
 					/>
 
-					<CustomButton
-						title="Add Vehicle"
-						handlePress={handleSubmit(onSubmitAddVehicle)}
-						containerStyles="my-6"
-					/>
+					<CustomButton title="Add Vehicle" handlePress={handleSubmit(submitForm)} containerStyles="my-6" />
 				</View>
 			</ScrollView>
 		</SafeAreaView>

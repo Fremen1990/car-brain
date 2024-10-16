@@ -5,7 +5,7 @@ import { useTheme } from '@/contexts/ThemeContext'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import moment from 'moment'
-import { images } from '@/constants'
+import { IMAGES } from '@/constants'
 import React from 'react'
 import { signOut } from '@/lib/appwrite'
 import { router } from 'expo-router' // Library to calculate the time since profile creation
@@ -43,7 +43,7 @@ const Settings = () => {
 			{/* User Info */}
 			<View className="flex-row items-center bg-gradient-to-r from-[#1E1E2C] to-[#232533] rounded-xl p-4 mt-6 w-full">
 				<Image
-					source={images.driverAvatar}
+					source={IMAGES.driverAvatar}
 					className="w-16 h-16 rounded-full border-2 border-[#FFA001] mr-4"
 					resizeMode="contain"
 					tintColor={'#FFA001'}

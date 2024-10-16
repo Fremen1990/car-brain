@@ -1,71 +1,39 @@
-import React, { useState } from 'react'
+import React from 'react'
 import FormField from '@/components/FormField'
 import { SafeAreaView, View, Text, ScrollView } from 'react-native'
 import { useForm } from 'react-hook-form'
-import { handleAppError } from '@/utils/errorHandler'
 import { router } from 'expo-router'
-import { addFuelRecord, saveToStorage } from '@/lib/appwrite'
+import { addFuelRecord } from '@/lib/appwrite'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { Loader } from '@/components/Loader'
 import CustomImagePicker from '@/components/CustomImagePicker'
 import VehiclePicker from '@/components/VehiclePicker'
 import CustomButton from '@/components/CustomButton'
+import { DEFAULT_FUEL_FORM_VALUES } from '@/constants'
+import { useFormSubmit } from '@/hooks/useFormSubmit'
+import { FuelFormData } from '@/types/FuelTypes'
 
-export interface FuelFormData {
-	vehicleId: string
-	userId: string
-	date: Date
-	mileage: number
-	fuelAmount: number
-	price: number
-	cost: number
-	fuelType: string
-	currency: string
-}
-
-// TODO: refactor to use onSubmit custom hook to handle form submission reusable
 // TODO: Write integration tests for add-fuel and add-vehicle with MSW and react native testing library
-
 // TODO: when have integration tests with MSW - refactor data fetching to tanstack query
 // TODO: when have integration tests with MSW - refactor state management to zustand
 
 const AddFuel = () => {
 	const { user } = useGlobalContext()
-	const [isLoading, setIsLoading] = useState(false)
 
-	// Image Picker state
-	const [imageUri, setImageUri] = useState<string | null>(null)
-	const [imageFileName, setImageFileName] = useState<string | null>(null)
-	const [imageMimeType, setImageMimeType] = useState<string | null>(null)
+	const {
+		handleSubmit,
+		control,
+		formState: { errors },
+		setValue,
+		watch,
+		reset
+	} = useForm<FuelFormData>({
+		defaultValues: DEFAULT_FUEL_FORM_VALUES
+	})
 
-	const handleImageSelected = (uri: string, fileName: string, mimeType: string) => {
-		setImageUri(uri)
-		setImageFileName(fileName)
-		setImageMimeType(mimeType)
-	}
-
-	// File upload handler
-	const handleFileUpload = async () => {
-		if (!imageUri || !imageFileName || !imageMimeType) return null
-		try {
-			return await saveToStorage(imageUri, imageFileName, imageMimeType)
-		} catch (error: unknown) {
-			handleAppError(error)
-			return null
-		}
-	}
-
-	const onSubmitAddFuel = async (newFuel: FuelFormData) => {
-		setIsLoading(true)
-
-		console.log('newFuel SUBMIT OUT OF TRY CATCH', newFuel)
-		try {
-			const uploadedFileUrl = await handleFileUpload()
-
-			console.log('uploadedFileUrl', uploadedFileUrl)
-
-			if (user?.$id !== undefined) {
-				// Explicitly convert string inputs to the correct data types
+	const { submitForm, isLoading, handleImageSelected } = useFormSubmit<FuelFormData>({
+		onSubmit: async (newFuel: FuelFormData) => {
+			if (user?.$id) {
 				const fuelData = {
 					...newFuel,
 					userId: user?.$id,
@@ -73,54 +41,22 @@ const AddFuel = () => {
 					price: parseFloat(String(newFuel.price)), // Convert to float
 					fuelAmount: parseFloat(String(newFuel.fuelAmount)), // Convert to float
 					cost: parseFloat(String(newFuel.cost)), // Convert to float
-					mileage: parseInt(String(newFuel.mileage), 10), // Convert to integer
-					attachments: uploadedFileUrl || null
+					mileage: parseInt(String(newFuel.mileage), 10) // Convert to integer
 				}
-
 				await addFuelRecord(fuelData)
-				// Send fuelData to database
-				console.log('Fuel data:', fuelData)
-
-				reset() // Reset the form after submission
-				router.push('/') // Redirect after adding fuel log
-
-				// router.push('/fuel-logs') // Redirect after adding fuel log}
+				reset()
+				router.push('/')
 			} else {
 				throw new Error('User ID is missing')
-			} // Navigate to payments screen in (add) folder
-		} catch (error: unknown) {
-			handleAppError(error)
-		} finally {
-			setIsLoading(false)
-		}
-	}
-
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-		setValue,
-		watch,
-		reset
-	} = useForm<FuelFormData>({
-		defaultValues: {
-			vehicleId: '',
-			date: new Date(),
-			price: 0,
-			fuelAmount: 0,
-			cost: 0,
-			fuelType: 'petrol',
-			currency: 'PLN',
-			mileage: 0
+			}
 		}
 	})
 
-	// vehicleId state and VehiclePicker
 	const { vehicles } = useGlobalContext()
 	const handleSelectVehicle = (selectedVehicleId: string) => {
-		setValue('vehicleId', selectedVehicleId) // Set the selected vehicle ID in the form
+		setValue('vehicleId', selectedVehicleId)
 	}
-	const selectedVehicleId = watch('vehicleId') // Use `watch` to track vehicleId in real-time
+	const selectedVehicleId = watch('vehicleId')
 
 	if (isLoading || !vehicles) {
 		return <Loader />
@@ -222,7 +158,7 @@ const AddFuel = () => {
 
 					<CustomImagePicker onImageSelected={handleImageSelected} containerStyles="py-6" />
 
-					<CustomButton title="Add fuel record" handlePress={handleSubmit(onSubmitAddFuel)} />
+					<CustomButton title="Add fuel record" handlePress={handleSubmit(submitForm)} />
 				</View>
 			</ScrollView>
 		</SafeAreaView>

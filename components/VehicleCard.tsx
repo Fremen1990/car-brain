@@ -1,10 +1,10 @@
-import { Vehicle } from '@/app/(tabs)/vehicles'
 import * as Animatable from 'react-native-animatable'
 import { Dimensions, Image } from 'react-native'
 import { Text, View } from '@/components/Themed'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import React from 'react'
 import { ProgressBar, Button } from 'react-native-paper'
+import { Vehicle } from '@/types/VehicleTypes'
 
 export interface VehicleCardProps {
 	vehicle: Vehicle
@@ -31,26 +31,26 @@ const isPortrait = screenHeight > screenWidth
 // TODO: add button somewhere to nagivate to UPDATE vehicle data via PUT request
 export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 	console.log('vehicle', vehicle)
+	//
+	// const zoomIn = {
+	// 	from: {
+	// 		scale: 0.9
+	// 	},
+	// 	to: {
+	// 		scale: 1.05
+	// 	}
+	// }
+	//
+	// const zoomOut = {
+	// 	from: {
+	// 		scale: 1.1
+	// 	},
+	// 	to: {
+	// 		scale: 0.9
+	// 	}
+	// }
 
-	const zoomIn = {
-		from: {
-			scale: 0.9
-		},
-		to: {
-			scale: 1.05
-		}
-	}
-
-	const zoomOut = {
-		from: {
-			scale: 1.1
-		},
-		to: {
-			scale: 0.9
-		}
-	}
-
-	const zoomInZoomOutAnimation = activeItem === vehicle.$id ? zoomIn : zoomOut
+	// const zoomInZoomOutAnimation = activeItem === vehicle.$id ? zoomIn : zoomOut
 
 	console.log('activeItem', activeItem)
 	console.log('vehicle.id', vehicle.$id)
@@ -65,7 +65,7 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 			}}
 			// TODO: fix this animation to be in the middle
 			// animation={isPortrait ? zoomInZoomOutAnimation : false} // Use the fixed animations
-			animation={false} // Use the fixed animations
+			// animation={false} // Use the fixed animations
 			duration={500}
 			useNativeDriver={true}
 		>

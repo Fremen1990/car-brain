@@ -3,7 +3,7 @@ import { Image, ScrollView } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { images } from '../constants'
+import { IMAGES } from '../constants'
 import CustomButton from '@/components/CustomButton'
 import { StatusBar } from 'expo-status-bar'
 
@@ -29,7 +29,7 @@ export default function App() {
 				}}
 			>
 				<View className="w-full justify-center items-center min-h-[85vh] px-4">
-					<Image source={images.carBrainLogo} className="max-w-[250px]  h-[250px]" resizeMode="contain" />
+					<Image source={IMAGES.carBrainLogo} className="max-w-[250px]  h-[250px]" resizeMode="contain" />
 
 					<View className="relative mt-5">
 						<Text className="text-3xl text-white font-bold text-center">Welcome to</Text>

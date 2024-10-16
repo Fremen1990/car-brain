@@ -14,13 +14,11 @@ import {
 	UploadProgress
 } from 'react-native-appwrite'
 import { appwriteConfig } from '@/appwriteConfig'
-import { VehicleRequestPayload } from '@/app/(tabs)/(add)/add-vehicle'
 import { handleAppError } from '@/utils/errorHandler'
-import { SignUpFormData } from '@/app/(auth)/sign-up'
-import { SignInFormData } from '@/app/(auth)/sign-in'
 import { AppwriteUser } from '@/contexts/GlobalProvider'
-import { Vehicle } from '@/app/(tabs)/vehicles'
-import { FuelFormData } from '@/app/(tabs)/(add)/add-fuel'
+import { SignInFormData, SignUpFormData } from '@/types/UserTypes'
+import { FuelFormData } from '@/types/FuelTypes'
+import { Vehicle, VehicleFormData } from '@/types/VehicleTypes'
 
 const { endpoint, platform, projectId, userCollectionId, databaseId, bucketId } = appwriteConfig
 
@@ -104,7 +102,7 @@ export const getCurrentUser = async (): Promise<AppwriteUser | null> => {
 	}
 }
 
-export const createVehicle = async (vehicleFormData: VehicleRequestPayload) => {
+export const createVehicle = async (vehicleFormData: VehicleFormData) => {
 	try {
 		return databases.createDocument(appwriteConfig.databaseId, appwriteConfig.vehicleCollectionId, ID.unique(), {
 			...vehicleFormData
