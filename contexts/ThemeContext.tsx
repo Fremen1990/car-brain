@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { useColorScheme as _useColorScheme } from 'react-native'
+
+import type { ReactNode } from 'react'
 
 // Create a context for the theme
 interface ThemeContextProps {

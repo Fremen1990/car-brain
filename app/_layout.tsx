@@ -1,6 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { useFonts } from 'expo-font'
+import { Stack } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import React, { useEffect } from 'react'
 
-// Import fonts directly
 import PoppinsBlack from '../assets/fonts/Poppins-Black.ttf'
 import PoppinsBold from '../assets/fonts/Poppins-Bold.ttf'
 import PoppinsExtraBold from '../assets/fonts/Poppins-ExtraBold.ttf'
@@ -12,15 +16,10 @@ import PoppinsSemiBold from '../assets/fonts/Poppins-SemiBold.ttf'
 import PoppinsThin from '../assets/fonts/Poppins-Thin.ttf'
 import SpaceMono from '../assets/fonts/SpaceMono-Regular.ttf'
 
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
-import { useFonts } from 'expo-font'
-import { Stack } from 'expo-router'
-import * as SplashScreen from 'expo-splash-screen'
-import React, { useEffect } from 'react'
 import 'react-native-reanimated'
 
-import { ThemeProvider as CustomThemeProvider, useTheme } from '@/contexts/ThemeContext'
 import { GlobalProvider } from '@/contexts/GlobalProvider'
+import { ThemeProvider as CustomThemeProvider, useTheme } from '@/contexts/ThemeContext'
 
 export {
 	// Catch any errors thrown by the Layout component.

@@ -1,18 +1,20 @@
-import React from 'react'
-import FormField from '@/components/FormField'
-import { SafeAreaView, View, Text } from '@/components/Themed'
-import { ScrollView } from 'react-native'
-import { useForm } from 'react-hook-form'
-import { createVehicle } from '@/lib/appwrite'
 import { router } from 'expo-router'
-import { useGlobalContext } from '@/contexts/GlobalProvider'
-import { Loader } from '@/components/Loader'
-import CustomImagePicker from '@/components/CustomImagePicker'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { ScrollView } from 'react-native'
+
+import type { VehicleFormData } from '@/types/VehicleTypes'
+
 import CustomButton from '@/components/CustomButton'
+import CustomImagePicker from '@/components/CustomImagePicker'
+import FormField from '@/components/FormField'
+import { Loader } from '@/components/Loader'
+import { SafeAreaView, View, Text } from '@/components/Themed'
 import { DEFAULT_VEHICLE_FORM_VALUES } from '@/constants'
-import { useFormSubmit } from '@/hooks/useFormSubmit'
 import { DEFAULT_VEHICLE_IMAGE_URL } from '@/constants/formConstants'
-import { VehicleFormData } from '@/types/VehicleTypes'
+import { useGlobalContext } from '@/contexts/GlobalProvider'
+import { useFormSubmit } from '@/hooks/useFormSubmit'
+import { createVehicle } from '@/lib/appwrite'
 
 const AddVehicle = () => {
 	const { user } = useGlobalContext()

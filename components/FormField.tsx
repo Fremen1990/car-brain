@@ -1,12 +1,13 @@
+import { Picker } from '@react-native-picker/picker'
 import React, { useState } from 'react'
-
+import { Controller } from 'react-hook-form'
 import { Image, Text, TextInput, Pressable, View } from 'react-native'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
 import { ICONS } from '../constants'
-import { Control } from 'react-hook-form/dist/types/form'
-import { Controller, FieldErrors, FieldValues, RegisterOptions, Path } from 'react-hook-form'
-import { Picker } from '@react-native-picker/picker'
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
+
+import type { FieldErrors, FieldValues, RegisterOptions, Path, ControllerRenderProps } from 'react-hook-form'
+import type { Control } from 'react-hook-form/dist/types/form'
 
 interface FormFieldProps<T extends FieldValues> {
 	title: string
@@ -24,6 +25,7 @@ interface FormFieldProps<T extends FieldValues> {
 	// date picker
 	date?: boolean // New prop for date picker
 }
+
 const FormField = <T extends FieldValues>({
 	title,
 	placeholder,
@@ -41,7 +43,7 @@ const FormField = <T extends FieldValues>({
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
 
 	// Handle Date Selection
-	const handleConfirm = (date: Date, onChange: any) => {
+	const handleConfirm = (date: Date, onChange: ControllerRenderProps<FieldValues, string>['onChange']) => {
 		setDatePickerVisibility(false)
 		onChange(date.toISOString().split('T')[0]) // Format date to YYYY-MM-DD
 	}

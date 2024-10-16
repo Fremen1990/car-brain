@@ -1,26 +1,16 @@
 import * as FileSystem from 'expo-file-system'
+import { Account, Avatars, Client, Databases, ID, Permission, Query, Role, Storage } from 'react-native-appwrite'
 
-import {
-	Account,
-	Avatars,
-	Client,
-	Databases,
-	ID,
-	Models,
-	Permission,
-	Query,
-	Role,
-	Storage,
-	UploadProgress
-} from 'react-native-appwrite'
+import type { AppwriteUser } from '@/contexts/GlobalProvider'
+import type { FuelFormData } from '@/types/FuelTypes'
+import type { SignInFormData, SignUpFormData } from '@/types/UserTypes'
+import type { Vehicle, VehicleFormData } from '@/types/VehicleTypes'
+import type { Models, UploadProgress } from 'react-native-appwrite'
+
 import { appwriteConfig } from '@/appwriteConfig'
 import { handleAppError } from '@/utils/errorHandler'
-import { AppwriteUser } from '@/contexts/GlobalProvider'
-import { SignInFormData, SignUpFormData } from '@/types/UserTypes'
-import { FuelFormData } from '@/types/FuelTypes'
-import { Vehicle, VehicleFormData } from '@/types/VehicleTypes'
 
-const { endpoint, platform, projectId, userCollectionId, databaseId, bucketId } = appwriteConfig
+const { endpoint, platform, projectId, userCollectionId, databaseId } = appwriteConfig
 
 const client = new Client()
 

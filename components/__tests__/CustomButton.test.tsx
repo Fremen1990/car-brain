@@ -1,5 +1,6 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react-native'
+import React from 'react'
+
 import CustomButton from '../CustomButton'
 
 test(`renders correctly`, () => {

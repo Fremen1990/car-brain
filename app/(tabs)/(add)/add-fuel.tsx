@@ -1,17 +1,19 @@
-import React from 'react'
-import FormField from '@/components/FormField'
-import { SafeAreaView, View, Text, ScrollView } from 'react-native'
-import { useForm } from 'react-hook-form'
 import { router } from 'expo-router'
-import { addFuelRecord } from '@/lib/appwrite'
-import { useGlobalContext } from '@/contexts/GlobalProvider'
-import { Loader } from '@/components/Loader'
-import CustomImagePicker from '@/components/CustomImagePicker'
-import VehiclePicker from '@/components/VehiclePicker'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { SafeAreaView, View, Text, ScrollView } from 'react-native'
+
+import type { FuelFormData } from '@/types/FuelTypes'
+
 import CustomButton from '@/components/CustomButton'
+import CustomImagePicker from '@/components/CustomImagePicker'
+import FormField from '@/components/FormField'
+import { Loader } from '@/components/Loader'
+import VehiclePicker from '@/components/VehiclePicker'
 import { DEFAULT_FUEL_FORM_VALUES } from '@/constants'
+import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { useFormSubmit } from '@/hooks/useFormSubmit'
-import { FuelFormData } from '@/types/FuelTypes'
+import { addFuelRecord } from '@/lib/appwrite'
 
 // TODO: Write integration tests for add-fuel and add-vehicle with MSW and react native testing library
 // TODO: when have integration tests with MSW - refactor data fetching to tanstack query

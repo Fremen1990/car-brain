@@ -1,10 +1,12 @@
-import * as Animatable from 'react-native-animatable'
-import { Dimensions, Image } from 'react-native'
-import { Text, View } from '@/components/Themed'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import React from 'react'
+import { Dimensions, Image } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 import { ProgressBar, Button } from 'react-native-paper'
-import { Vehicle } from '@/types/VehicleTypes'
+
+import type { Vehicle } from '@/types/VehicleTypes'
+
+import { Text, View } from '@/components/Themed'
 
 export interface VehicleCardProps {
 	vehicle: Vehicle

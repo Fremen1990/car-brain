@@ -1,10 +1,13 @@
-import React from 'react'
 import { Tabs } from 'expo-router'
+import React from 'react'
+import { Image } from 'react-native'
 
 import { ICONS } from '../../constants'
-import { ImageProps, Image } from 'react-native'
-import { View, Text } from '@/components/Themed'
+
+import type { ImageProps } from 'react-native'
+
 import FloatingButton from '@/components/FloatingButton'
+import { View, Text } from '@/components/Themed'
 
 interface TabIconProps {
 	icon: ImageProps

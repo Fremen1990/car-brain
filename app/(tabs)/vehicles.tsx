@@ -1,16 +1,18 @@
-import { Text, SafeAreaView, View } from '@/components/Themed'
-import { FlatList, ViewToken, Dimensions, Pressable } from 'react-native'
-
+import { useFocusEffect } from '@react-navigation/core'
+import { router } from 'expo-router'
 import React, { useState } from 'react'
+import { FlatList, Dimensions, Pressable } from 'react-native'
+
+import type { Vehicle } from '@/types/VehicleTypes'
+import type { ViewToken } from 'react-native'
+
+import CustomButton from '@/components/CustomButton'
+import { Loader } from '@/components/Loader'
+import { Text, SafeAreaView, View } from '@/components/Themed'
 import { VehicleCard } from '@/components/VehicleCard'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { getAllVehicles } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
-import { router } from 'expo-router'
-import CustomButton from '@/components/CustomButton'
-import { Loader } from '@/components/Loader'
-import { useFocusEffect } from '@react-navigation/core'
-import { Vehicle } from '@/types/VehicleTypes'
 
 const screenWidth = Dimensions.get('window').width
 const Vehicles = () => {

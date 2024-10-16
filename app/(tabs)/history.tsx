@@ -1,11 +1,12 @@
-import React from 'react'
-import { View, Text, SafeAreaView, Dimensions } from 'react-native'
-import Timeline from 'react-native-timeline-flatlist'
-import moment from 'moment'
-import { useGlobalContext } from '@/contexts/GlobalProvider'
 import Entypo from '@expo/vector-icons/Entypo'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import moment from 'moment'
+import React from 'react'
+import { View, Text, SafeAreaView, Dimensions } from 'react-native'
+import Timeline from 'react-native-timeline-flatlist'
+
+import { useGlobalContext } from '@/contexts/GlobalProvider'
 
 const screenWidth = Dimensions.get('window').width // Get screen width for responsive design
 

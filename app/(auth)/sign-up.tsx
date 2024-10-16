@@ -1,17 +1,18 @@
+import { Link, router } from 'expo-router'
 import React from 'react'
-
+import { useForm } from 'react-hook-form'
 import { ScrollView, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { DEFAULT_USER_SIGN_UP_FORM_VALUES, IMAGES } from '../../constants'
-import FormField from '@/components/FormField'
+
+import type { SignUpFormData } from '@/types/UserTypes'
+
 import CustomButton from '@/components/CustomButton'
-import { Link, router } from 'expo-router'
+import FormField from '@/components/FormField'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { createUser } from '@/lib/appwrite'
 import { handleAppError } from '@/utils/errorHandler'
-import { useForm } from 'react-hook-form'
-import { SignUpFormData } from '@/types/UserTypes'
 
 const SignUp = () => {
 	const { setUser, setIsLogged } = useGlobalContext()
@@ -27,7 +28,8 @@ const SignUp = () => {
 	const submit = async (newUser: SignUpFormData) => {
 		try {
 			const result = await createUser(newUser)
-			result && setUser(result)
+			if (!result) throw Error('User not created')
+			setUser(result)
 			setIsLogged(true)
 			router.replace('/dashboard')
 		} catch (error: unknown) {

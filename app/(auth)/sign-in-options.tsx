@@ -1,11 +1,11 @@
+import { Link, router } from 'expo-router'
 import React from 'react'
-
 import { ScrollView, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { IMAGES } from '../../constants'
+
 import CustomButton from '@/components/CustomButton'
-import { Link, router } from 'expo-router'
 
 const SignInOptions = () => {
 	return (

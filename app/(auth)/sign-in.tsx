@@ -1,17 +1,18 @@
+import { Link, router } from 'expo-router'
 import React from 'react'
-
+import { useForm } from 'react-hook-form'
 import { ScrollView, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { DEFAULT_USER_SIGN_IN_FORM_VALUES, IMAGES } from '../../constants'
-import FormField from '@/components/FormField'
+
+import type { SignInFormData } from '@/types/UserTypes'
+
 import CustomButton from '@/components/CustomButton'
-import { Link, router } from 'expo-router'
+import FormField from '@/components/FormField'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { getCurrentUser, signIn } from '@/lib/appwrite'
 import { handleAppError } from '@/utils/errorHandler'
-import { useForm } from 'react-hook-form'
-import { SignInFormData } from '@/types/UserTypes'
 
 const SignIn = () => {
 	const { setUser, setIsLogged } = useGlobalContext()

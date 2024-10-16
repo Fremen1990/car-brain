@@ -1,8 +1,8 @@
+import Ionicons from '@expo/vector-icons/Ionicons'
+import * as ImageManipulator from 'expo-image-manipulator'
+import * as ImagePicker from 'expo-image-picker'
 import React, { useState } from 'react'
 import { View, Text, Image, Pressable, Alert } from 'react-native'
-import * as ImagePicker from 'expo-image-picker'
-import * as ImageManipulator from 'expo-image-manipulator'
-import Ionicons from '@expo/vector-icons/Ionicons'
 
 interface ImagePickerComponentProps {
 	onImageSelected: (uri: string, fileName: string, mimeType: string) => void

@@ -1,6 +1,7 @@
 import React from 'react'
-import { SafeAreaView, View } from '@/components/Themed'
 import { ActivityIndicator } from 'react-native'
+
+import { SafeAreaView, View } from '@/components/Themed'
 
 export const Loader = () => {
 	return (

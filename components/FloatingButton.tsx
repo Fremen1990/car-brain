@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, Animated, Dimensions } from 'react-native'
-import { View } from '@/components/Themed'
-
 import Ionicons from '@expo/vector-icons/Ionicons'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { router } from 'expo-router'
+import React, { useEffect, useState } from 'react'
+import { Pressable, StyleSheet, Animated, Dimensions } from 'react-native'
+
+import { View } from '@/components/Themed'
 // TODO make slight refactor - low priority
 export const FloatingButton = () => {
 	const [icon_1_vertical] = useState(new Animated.Value(-30)) // Vertical animation for icon 1

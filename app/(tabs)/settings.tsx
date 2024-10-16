@@ -1,14 +1,14 @@
-import { View, Text, SafeAreaView } from '@/components/Themed'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { router } from 'expo-router' // Library to calculate the time since profile creation
+import moment from 'moment'
+import React from 'react'
 import { Switch, Image, Pressable } from 'react-native'
 
-import { useTheme } from '@/contexts/ThemeContext'
-import { useGlobalContext } from '@/contexts/GlobalProvider'
-import Ionicons from '@expo/vector-icons/Ionicons'
-import moment from 'moment'
+import { View, Text, SafeAreaView } from '@/components/Themed'
 import { IMAGES } from '@/constants'
-import React from 'react'
+import { useGlobalContext } from '@/contexts/GlobalProvider'
+import { useTheme } from '@/contexts/ThemeContext'
 import { signOut } from '@/lib/appwrite'
-import { router } from 'expo-router' // Library to calculate the time since profile creation
 
 const Settings = () => {
 	const { user, setUser, setIsLogged } = useGlobalContext()

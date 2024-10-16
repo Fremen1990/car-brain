@@ -1,13 +1,13 @@
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { router } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { ScrollView, Dimensions, Image, Pressable } from 'react-native'
-import { SafeAreaView, View, Text } from '@/components/Themed'
-
 import { LineChart, PieChart } from 'react-native-chart-kit'
-import { StatusBar } from 'expo-status-bar'
-import Ionicons from '@expo/vector-icons/Ionicons'
 
 import { IMAGES } from '../../constants'
-import { router } from 'expo-router'
+
+import { SafeAreaView, View, Text } from '@/components/Themed'
 
 // Example of user data (you can fetch it from Firestore or any backend)
 const user = {

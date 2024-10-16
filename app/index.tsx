@@ -1,16 +1,15 @@
+import { Redirect, router } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { Image, ScrollView } from 'react-native'
-
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { IMAGES } from '../constants'
-import CustomButton from '@/components/CustomButton'
-import { StatusBar } from 'expo-status-bar'
 
-import { Redirect, router } from 'expo-router'
-import { useGlobalContext } from '@/contexts/GlobalProvider'
-import { View, Text } from '@/components/Themed'
+import CustomButton from '@/components/CustomButton'
 import { Loader } from '@/components/Loader'
+import { View, Text } from '@/components/Themed'
+import { useGlobalContext } from '@/contexts/GlobalProvider'
 
 export default function App() {
 	const { isLoadingGetCurrentUser, isLogged } = useGlobalContext()

@@ -7,6 +7,7 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReactNative from "eslint-plugin-react-native";
 import pluginPrettier from "eslint-plugin-prettier";
 import pluginJest from "eslint-plugin-jest";
+import pluginImport from "eslint-plugin-import";
 
 export default [
   {
@@ -30,7 +31,7 @@ export default [
       "react-hooks": pluginReactHooks,
       "react-native": pluginReactNative,
       jest: pluginJest,
-
+      import: pluginImport,
     },
     rules: {
       // General ESLint rules
@@ -38,6 +39,13 @@ export default [
 
       // TypeScript rules
       ...tsEslint.configs.recommended.rules,
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports", // Enforces `import type` syntax
+          disallowTypeAnnotations: false,
+        },
+      ],
 
       // React rules
       ...pluginReact.configs.flat.recommended.rules,
@@ -58,7 +66,33 @@ export default [
       "jest/valid-expect": "error",
 
       // Prettier integration
-      "prettier/prettier": "error", // Ensures prettier issues are shown as ESLint errors
+      "prettier/prettier": "error",
+
+      // Import order rules
+      "import/order": [
+        "error",
+        {
+          "groups": [
+            "builtin", // Node "builtin" modules (like fs, path)
+            "external", // "external" packages from npm (e.g., react, lodash)
+            "internal", // Internal imports, like aliases for project-specific folders
+            ["parent", "sibling"], // Parent & sibling imports
+            "index", // Index files ("./")
+            "object", // Imports using the object spread operator
+            "type", // Import type definitions
+          ],
+          "newlines-between": "always", // Add new lines between groups
+          "alphabetize": {
+            "order": "asc", // Order imports alphabetically within each group
+            "caseInsensitive": true // Ignore case while ordering
+          },
+          "distinctGroup": true, // Custom rule to separate default and named imports
+        }
+      ],
+
+      // Import sorting and separation
+      "import/newline-after-import": "error", // Ensures there is a newline after the last import
+      "import/no-duplicates": "error", // Prevents duplicate imports
     },
   },
   {

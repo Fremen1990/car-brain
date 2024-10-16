@@ -1,5 +1,7 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { View, Text, Image, Pressable, FlatList } from 'react-native'
+
+import type { FC } from 'react'
 
 interface Vehicle {
 	$id: string

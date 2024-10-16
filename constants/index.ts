@@ -1,5 +1,3 @@
-import ICONS from './icons'
-import IMAGES from './images'
 import {
 	DEFAULT_USER_SIGN_IN_FORM_VALUES,
 	DEFAULT_USER_SIGN_UP_FORM_VALUES,
@@ -8,6 +6,8 @@ import {
 	DEFAULT_FUEL_FORM_VALUES,
 	DEFAULT_VEHICLE_FORM_VALUES
 } from './formConstants'
+import ICONS from './icons'
+import IMAGES from './images'
 
 export {
 	ICONS,

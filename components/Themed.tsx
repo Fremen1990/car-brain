@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text as DefaultText, View as DefaultView } from 'react-native'
 import { SafeAreaView as DefaultSafeAreaView } from 'react-native-safe-area-context'
+
 import { useTheme } from '@/contexts/ThemeContext'
 
 // Types for component props

@@ -1,7 +1,9 @@
-import React, { useCallback } from 'react'
-import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react'
+import React, { useCallback, createContext, useContext, useEffect, useState } from 'react'
+
+import type { FC, PropsWithChildren } from 'react'
+import type { Models } from 'react-native-appwrite'
+
 import { getAllVehicles, getCurrentUser } from '@/lib/appwrite'
-import { Models } from 'react-native-appwrite'
 import { handleAppError } from '@/utils/errorHandler'
 
 export interface AppwriteUser extends Models.Document {
