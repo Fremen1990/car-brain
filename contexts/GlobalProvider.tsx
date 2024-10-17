@@ -1,26 +1,10 @@
 import React, { useCallback, createContext, useContext, useEffect, useState } from 'react'
 
+import type { AppwriteUser, Vehicle } from '@/types'
 import type { FC, PropsWithChildren } from 'react'
-import type { Models } from 'react-native-appwrite'
 
 import { getAllVehicles, getCurrentUser } from '@/lib/appwrite'
 import { handleAppError } from '@/utils/errorHandler'
-
-export interface AppwriteUser extends Models.Document {
-	accountId: string
-	avatar: string
-	email: string
-	username: string
-}
-
-export interface Vehicle extends Models.Document {
-	accountId: string
-	image: string
-	brand: string
-	model: string
-	licensePlate: string
-	fuelEfficiency: number
-}
 
 interface GlobalContextType {
 	user: AppwriteUser | null // Update this to just AppwriteUser, not Models.User

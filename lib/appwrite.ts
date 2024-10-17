@@ -1,9 +1,8 @@
 import * as FileSystem from 'expo-file-system'
 import { Account, Avatars, Client, Databases, ID, Permission, Query, Role, Storage } from 'react-native-appwrite'
 
-import type { AppwriteUser } from '@/contexts/GlobalProvider'
-import type { FuelFormData } from '@/types/FuelTypes'
-import type { SignInFormData, SignUpFormData } from '@/types/UserTypes'
+import type { FuelFormData, FuelRecord } from '@/types/FuelTypes'
+import type { AppwriteUser, SignInFormData, SignUpFormData } from '@/types/UserTypes'
 import type { Vehicle, VehicleFormData } from '@/types/VehicleTypes'
 import type { Models, UploadProgress } from 'react-native-appwrite'
 
@@ -188,5 +187,19 @@ export const addFuelRecord = async (fuelData: FuelFormData) => {
 		return response.documents
 	} catch (error: unknown) {
 		handleAppError(error)
+	}
+}
+
+export const getFuelRecords = async (vehicleId: string | string[]): Promise<FuelRecord> => {
+	try {
+		const response = await databases.listDocuments(
+			appwriteConfig.databaseId,
+			appwriteConfig.fuelRecordsCollectionId,
+			[Query.equal('vehicleId', vehicleId)]
+		)
+		return response.documents
+	} catch (error: unknown) {
+		handleAppError(error)
+		return []
 	}
 }

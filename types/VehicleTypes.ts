@@ -1,4 +1,4 @@
-import { Models } from 'react-native-appwrite'
+import type { Models } from 'react-native-appwrite'
 
 export interface VehicleFormData {
 	users: string
@@ -15,8 +15,11 @@ export interface VehicleFormData {
 	image: URL | string
 }
 
-export interface Vehicle extends VehicleFormData, Models.Document {
+export interface Vehicle extends Models.Document {
 	accountId: string
 	image: string
+	brand: string
+	model: string
+	licensePlate: string
 	fuelEfficiency: number
 }

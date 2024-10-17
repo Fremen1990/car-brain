@@ -44,6 +44,7 @@ const Add = () => {
 					date: new Date(newFuel.date), // Ensure date is in correct format
 					price: parseFloat(String(newFuel.price)), // Convert to float
 					fuelAmount: parseFloat(String(newFuel.fuelAmount)), // Convert to float
+					fuelUnits: 'liters', // Default to liters
 					cost: parseFloat(String(newFuel.cost)), // Convert to float
 					mileage: parseInt(String(newFuel.mileage), 10) // Convert to integer
 				}

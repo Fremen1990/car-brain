@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
+import { router } from 'expo-router'
 import React from 'react'
 import { Dimensions, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable'
@@ -53,11 +54,15 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 
 	// const zoomInZoomOutAnimation = activeItem === vehicle.$id ? zoomIn : zoomOut
 
+	const handleNavigateToVehicleDetails = () => {
+		router.push(`/vehicles/${vehicle.$id}`) // Navigate to payments screen in (add) folder
+	}
+
 	return (
 		<Animatable.View
 			className="bg-[#232533] rounded-xl p-4 mb-5 mr-4 shadow-lg shadow-black"
 			style={{
-				width: !isPortrait ? screenWidth * 0.25 : screenWidth * (isLargeScreen ? 0.4 : 0.6) // Reduced card width
+				width: !isPortrait ? screenWidth * 0.25 : screenWidth * (isLargeScreen ? 0.4 : 0.8) // Reduced card width
 			}}
 			// TODO: fix this animation to be in the middle
 			// animation={isPortrait ? zoomInZoomOutAnimation : false} // Use the fixed animations
@@ -72,7 +77,7 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 				}}
 				className="w-full h-44 rounded-xl"
 				style={{
-					height: screenHeight * (isLargeScreen ? 0.1 : 0.3), // Dynamic height based on screen size
+					height: screenHeight * (isLargeScreen ? 0.1 : 0.2), // Dynamic height based on screen size
 
 					resizeMode: 'cover'
 				}}
@@ -112,14 +117,8 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 					Fuel Efficiency: {vehicle.fuelEfficiency} L/100km
 				</Text>
 				{/*TODO: add here additional screens  with fuel and service logs per car with [query] */}
-				<Button
-					mode="outlined"
-					onPress={() => {
-						/* Navigate to fuel logs */
-					}}
-					className="mt-2"
-				>
-					View Fuel Logs
+				<Button mode="outlined" onPress={handleNavigateToVehicleDetails} className="mt-2">
+					View Details
 				</Button>
 				{/*</View>*/}
 			</View>
