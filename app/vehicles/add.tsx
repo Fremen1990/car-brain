@@ -16,7 +16,7 @@ import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { useFormSubmit } from '@/hooks/useFormSubmit'
 import { createVehicle } from '@/lib/appwrite'
 
-const AddVehicle = () => {
+const Add = () => {
 	const { user } = useGlobalContext()
 
 	const {
@@ -146,4 +146,4 @@ const AddVehicle = () => {
 	)
 }
 
-export default AddVehicle
+export default Add

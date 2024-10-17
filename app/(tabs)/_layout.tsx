@@ -68,14 +68,14 @@ const TabsLayout = () => {
 					}}
 				/>
 
-				<Tabs.Screen
-					name="service"
-					options={{
-						title: 'Service',
-						headerShown: false,
-						tabBarIcon: () => null
-					}}
-				/>
+				{/*<Tabs.Screen*/}
+				{/*	name="service"*/}
+				{/*	options={{*/}
+				{/*		title: 'Service',*/}
+				{/*		headerShown: false,*/}
+				{/*		tabBarIcon: () => null*/}
+				{/*	}}*/}
+				{/*/>*/}
 
 				<Tabs.Screen
 					name="(add)"

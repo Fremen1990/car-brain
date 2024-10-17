@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Text, SafeAreaView, View } from '@/components/Themed'
 
-const AddService = () => {
+const Add = () => {
 	return (
 		<SafeAreaView className="bg-primary h-full items-center justify-center">
 			<View>
@@ -13,4 +13,4 @@ const AddService = () => {
 }
 
 //  Always need to be export default
-export default AddService
+export default Add

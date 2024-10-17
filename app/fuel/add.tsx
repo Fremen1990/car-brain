@@ -21,7 +21,7 @@ import { addFuelRecord } from '@/lib/appwrite'
 // TODO: when have integration tests with MSW - refactor data fetching to tanstack query
 // TODO: when have integration tests with MSW - refactor state management to zustand
 
-const AddFuel = () => {
+const Add = () => {
 	const { user } = useGlobalContext()
 
 	const {
@@ -49,7 +49,8 @@ const AddFuel = () => {
 				}
 				await addFuelRecord(fuelData)
 				reset()
-				router.push('/')
+				// router.push('/')
+				router.push(`/vehicles/${fuelData.vehicleId}`)
 			} else {
 				throw new Error('User ID is missing')
 			}
@@ -169,4 +170,4 @@ const AddFuel = () => {
 	)
 }
 
-export default AddFuel
+export default Add

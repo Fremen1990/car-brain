@@ -70,12 +70,11 @@ const RootLayout = () => {
 		<GlobalProvider>
 			<CustomThemeProvider>
 				<ThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
+					{/*<Stack screenOptions={{ headerShown: false }}>*/}
 					<Stack>
 						<Stack.Screen name="index" options={{ headerShown: false }} />
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-						<Stack.Screen name="(tabs)/(add)" options={{ headerShown: false }} />
-						{/*<Stack.Screen name="search/[query]" options={{ headerShown: false }} />*/}
 					</Stack>
 				</ThemeProvider>
 			</CustomThemeProvider>
