@@ -15,6 +15,8 @@ import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { useFormSubmit } from '@/hooks/useFormSubmit'
 import { addFuelRecord } from '@/lib/appwrite'
 
+// TODO: !!!! When add fuel record redirect to history page with new record highlighted and show snackbar with success message !!!!
+
 // TODO: Write integration tests for add-fuel and add-vehicle with MSW and react native testing library
 // TODO: when have integration tests with MSW - refactor data fetching to tanstack query
 // TODO: when have integration tests with MSW - refactor state management to zustand

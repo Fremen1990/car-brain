@@ -32,9 +32,6 @@ const useAppwrite = <T,>(fn: FetchFunction<T>): UseAppwriteReturn<T> => {
 	}, [])
 
 	const refetch = async () => fetchData()
-
-	// console.log("posts data", data);
-
 	return { data, refetch, loading }
 }
 

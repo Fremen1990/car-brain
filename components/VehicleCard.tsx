@@ -32,7 +32,6 @@ const isPortrait = screenHeight > screenWidth
 
 // TODO: add button somewhere to nagivate to UPDATE vehicle data via PUT request
 export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
-	console.log('vehicle', vehicle)
 	//
 	// const zoomIn = {
 	// 	from: {
@@ -53,11 +52,6 @@ export const VehicleCard = ({ vehicle, activeItem }: VehicleCardProps) => {
 	// }
 
 	// const zoomInZoomOutAnimation = activeItem === vehicle.$id ? zoomIn : zoomOut
-
-	console.log('activeItem', activeItem)
-	console.log('vehicle.id', vehicle.$id)
-
-	console.log('vehicle image', vehicle.image)
 
 	return (
 		<Animatable.View

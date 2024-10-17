@@ -25,8 +25,6 @@ const SignIn = () => {
 		defaultValues: DEFAULT_USER_SIGN_IN_FORM_VALUES
 	})
 
-	console.log('isValid', isValid)
-
 	const submit = async (user: SignInFormData) => {
 		try {
 			await signIn(user)

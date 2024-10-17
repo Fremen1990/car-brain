@@ -63,7 +63,6 @@ export const signIn = async ({ email, password }: SignInFormData) => {
 export const signOut = async () => {
 	try {
 		const session = await account.deleteSession('current')
-		console.log('CURRENT SESSION', session)
 		return session
 	} catch (error: unknown) {
 		handleAppError(error)
@@ -71,20 +70,14 @@ export const signOut = async () => {
 }
 
 export const getCurrentUser = async (): Promise<AppwriteUser | null> => {
-	console.log('GET CURRENT ACCOUNT ')
 	try {
 		const currentAccount = await account.get()
-		console.log('CURRENT ACCOUNT', currentAccount.$id)
-
 		if (!currentAccount) throw Error
 
 		const currentUser = await databases.listDocuments<AppwriteUser>(databaseId, userCollectionId, [
 			Query.equal('accountId', currentAccount.$id)
 		])
 		if (!currentUser) throw Error
-
-		console.log('CURRENT USER', currentUser)
-
 		return currentUser.documents[0]
 	} catch (error: unknown) {
 		handleAppError(error)

@@ -17,8 +17,6 @@ export const FloatingButton = () => {
 
 	const [pop, setPop] = useState(false)
 
-	console.log('POP', pop)
-
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width) // Initial screen width
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [screenHeight, setScreenHeight] = useState(Dimensions.get('window').height) // Initial screen height
