@@ -1,15 +1,30 @@
 import { Redirect, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { Image, ScrollView } from 'react-native'
+import { AppRegistry, Image, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import { expo } from '../app.json'
 import { IMAGES } from '../constants'
 
 import CustomButton from '@/components/CustomButton'
 import { Loader } from '@/components/Loader'
 import { View, Text } from '@/components/Themed'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
+
+async function enableMocking() {
+	if (!__DEV__) {
+		return
+	}
+
+	await import('../msw.polyfills') // Ensure polyfills are loaded
+	const { server } = await import('../mocks/server')
+	server.listen() // Start MSW server
+}
+
+enableMocking().then(() => {
+	AppRegistry.registerComponent(expo.name, () => App)
+})
 
 export default function App() {
 	const { isLoadingGetCurrentUser, isLogged } = useGlobalContext()
