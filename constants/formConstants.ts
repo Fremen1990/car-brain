@@ -27,6 +27,7 @@ export const DEFAULT_VEHICLE_FORM_VALUES = {
 }
 
 export const DEFAULT_FUEL_FORM_VALUES = {
+	userId: '',
 	vehicleId: '',
 	date: new Date(),
 	price: 0,

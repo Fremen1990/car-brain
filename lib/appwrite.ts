@@ -117,16 +117,13 @@ export const saveToStorage = async (
 			uri: fileUri
 		}
 
-		// Use appwriteConfig to get the bucketId
 		const uploadedFile = await storage.createFile(
-			appwriteConfig.bucketId, // Retrieve the bucketId from appwriteConfig
-			ID.unique(), // Generate a unique ID for the file
+			appwriteConfig.bucketId,
+			ID.unique(),
 			file,
-			[Permission.read(Role.any())], // Adjust permissions as needed
-			onProgress || (() => {}) // Handle the upload progress
+			[Permission.read(Role.any())],
+			onProgress || (() => {})
 		)
-
-		// return uploadedFile // Return the uploaded file response
 
 		const fileUrl = getFilePreview(uploadedFile.$id, 'image')
 
@@ -201,5 +198,48 @@ export const getFuelRecords = async (vehicleId: string | string[]): Promise<Fuel
 	} catch (error: unknown) {
 		handleAppError(error)
 		return []
+	}
+}
+
+export const getFuelRecordById = async (id: string): Promise<FuelRecord | null> => {
+	try {
+		const response = await databases.getDocument(
+			appwriteConfig.databaseId,
+			appwriteConfig.fuelRecordsCollectionId,
+			id
+		)
+		return response
+	} catch (error: unknown) {
+		handleAppError(error)
+		return null
+	}
+}
+
+export const updateFuelRecord = async (id: string, fuelData: FuelFormData) => {
+	try {
+		const response = await databases.updateDocument(
+			appwriteConfig.databaseId,
+			appwriteConfig.fuelRecordsCollectionId,
+			id,
+			{
+				...fuelData
+			}
+		)
+		return response
+	} catch (error: unknown) {
+		handleAppError(error)
+	}
+}
+
+export const deleteFuelRecord = async (id: string) => {
+	try {
+		const response = await databases.deleteDocument(
+			appwriteConfig.databaseId,
+			appwriteConfig.fuelRecordsCollectionId,
+			id
+		)
+		return response
+	} catch (error: unknown) {
+		handleAppError(error)
 	}
 }

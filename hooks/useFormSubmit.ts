@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { handleAppError } from '@/utils/errorHandler'
+
 import { saveToStorage } from '@/lib/appwrite'
+import { handleAppError } from '@/utils/errorHandler'
 
 interface UseFormSubmitProps<T> {
 	onSubmit: (data: T) => Promise<void>
@@ -29,7 +30,7 @@ export const useFormSubmit = <T>({ onSubmit, defaultImageUrl }: UseFormSubmitPro
 		}
 	}
 
-	const submitForm = async (data: T) => {
+	const submitForm = async (data: T, reset: () => void) => {
 		setIsLoading(true)
 		try {
 			let uploadedFileUrl: URL | string | null = await handleFileUpload()
@@ -39,6 +40,7 @@ export const useFormSubmit = <T>({ onSubmit, defaultImageUrl }: UseFormSubmitPro
 			}
 
 			await onSubmit({ ...data, image: uploadedFileUrl })
+			reset()
 		} catch (error: unknown) {
 			handleAppError(error)
 		} finally {
