@@ -9,7 +9,7 @@ test('renders a list of vehicles', async () => {
 
 	// Verify the mocked data is rendered
 	await waitFor(() => {
-		expect(screen.getByText('Fiat')).toBeTruthy()
-		expect(screen.getByText('Tesla')).toBeTruthy()
+		expect(screen.getByText('Fiat 500')).toBeTruthy()
+		expect(screen.getByText('Tesla Model 3')).toBeTruthy()
 	})
 })

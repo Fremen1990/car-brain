@@ -5,6 +5,32 @@
 
 import '@testing-library/react-native/extend-expect'
 
+// Mock for Appwrite client and functions
+jest.mock('@/lib/appwrite', () => ({
+	getAllVehicles: jest.fn(() =>
+		Promise.resolve([
+			{
+				$id: '1',
+				brand: 'Fiat',
+				model: '500',
+				licensePlate: 'FIAT123',
+				vin: 'ZFA19400002039183',
+				mileage: 120000
+			},
+			{
+				$id: '2',
+				brand: 'Tesla',
+				model: 'Model S',
+				licensePlate: 'TESLA123',
+				vin: '5YJSA1E23FF101307',
+				mileage: 50000
+			}
+		])
+	),
+	addFuelRecord: jest.fn(() => Promise.resolve({ success: true })),
+	updateFuelRecord: jest.fn(() => Promise.resolve({ success: true }))
+}))
+
 jest.mock('expo-file-system', () => ({
 	getInfoAsync: jest.fn(() => Promise.resolve({ exists: true, size: 1024 })),
 	readAsStringAsync: jest.fn(() => Promise.resolve('mocked file content')),

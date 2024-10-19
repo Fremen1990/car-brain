@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native'
 import { render as rtlRender } from '@testing-library/react-native'
 import * as React from 'react'
 
@@ -7,7 +8,9 @@ import { ThemeProvider as CustomThemeProvider } from '@/contexts/ThemeContext'
 function TestWrapper({ children }: { children: React.ReactNode }) {
 	return (
 		<GlobalProvider>
-			<CustomThemeProvider>{children}</CustomThemeProvider>
+			<CustomThemeProvider>
+				<NavigationContainer>{children}</NavigationContainer>
+			</CustomThemeProvider>
 		</GlobalProvider>
 	)
 }

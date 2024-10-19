@@ -4,6 +4,8 @@
 node_modules/
 pnpm-lock.yaml
 
+# coverage
+coverage/
 
 # Expo
 .expo/

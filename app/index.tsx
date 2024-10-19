@@ -13,7 +13,7 @@ import { View, Text } from '@/components/Themed'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 
 async function enableMocking() {
-	if (!__DEV__) {
+	if (!__DEV__ && process.env.NODE_ENV !== 'test') {
 		return
 	}
 
