@@ -8,6 +8,8 @@
 		"ios": "expo start --ios",
 		"web": "expo start --web",
 		"test": "jest",
+		"test:watch": "jest --watch",
+		"test:coverage": "jest --coverage",
 		"pretty": "pnpx prettier --write app components lib utils",
 		"pretty:check": "pnpx prettier --check app components lib utils",
 		"lint": "pnpx eslint app contexts components lib utils"
