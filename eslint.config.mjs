@@ -101,6 +101,7 @@ export default [
     languageOptions: {
       globals: {
         ...globals.jest, // Enable Jest globals like `test`, `expect`, etc.
+        __DEV__: 'readonly',
       },
     },
     rules: {
