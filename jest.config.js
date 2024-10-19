@@ -3,5 +3,8 @@ module.exports = {
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 	setupFilesAfterEnv: ['./jest-setup.ts'],
 	transformIgnorePatterns: ['node_modules/(?!@toolz/allow)/" --env=jsdom'],
-	testMatch: ['**/*.test.{ts,tsx}']
+	testMatch: ['**/*.test.{ts,tsx}'],
+	moduleNameMapper: {
+		'^@/(.*)$': '<rootDir>/$1'
+	}
 }
