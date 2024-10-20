@@ -24,7 +24,7 @@ jest.mock('@/lib/appwrite', () => ({
 	getAllVehicles: jest.fn()
 }))
 
-jest.mock('@/components/VehicleCard', () => {
+jest.mock('@/components/VehicleCard/VehicleCard', () => {
 	// eslint-disable-next-line no-undef,@typescript-eslint/no-require-imports
 	const { Text } = require('react-native')
 	return {

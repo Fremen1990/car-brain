@@ -2,9 +2,9 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import { Text, View } from 'react-native'
 
-import DatePickerField from './DatePickerField'
-import DropdownPicker from './DropdownPicker'
-import TextInputField from './TextInputField'
+import DatePickerField from '../DatePickerField/DatePickerField'
+import DropdownPicker from '../DropdownPicker/DropdownPicker'
+import TextInputField from '../TextInputField/TextInputField'
 
 import type { FieldErrors, FieldValues, RegisterOptions, Path, Control } from 'react-hook-form'
 

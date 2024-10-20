@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { IMAGES } from '../../constants'
 
-import CustomButton from '@/components/CustomButton'
+import CustomButton from '@/components/CustomButton/CustomButton'
 
 const SignInOptions = () => {
 	return (

@@ -3,8 +3,8 @@ import React from 'react'
 
 import type { FuelFormData } from '@/types/FuelTypes'
 
-import FuelForm from '@/components/FuelForm'
-import { Loader } from '@/components/Loader'
+import FuelForm from '@/components/FuelForm/FuelForm'
+import { Loader } from '@/components/Loader/Loader'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { useFormSubmit } from '@/hooks/useFormSubmit'
 import { getFuelRecordById, updateFuelRecord } from '@/lib/appwrite'

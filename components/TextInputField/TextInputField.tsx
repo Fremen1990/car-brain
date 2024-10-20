@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { TextInput, Pressable, Image } from 'react-native'
 
-import { ICONS } from '../constants'
+import { ICONS } from '../../constants'
 
 import type { ControllerRenderProps } from 'react-hook-form'
 

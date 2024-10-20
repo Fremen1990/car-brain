@@ -5,7 +5,7 @@ import { Text, View, ScrollView, Image, Pressable, Alert, Modal, TouchableOpacit
 
 import type { FuelRecord } from '@/types'
 
-import { Loader } from '@/components/Loader'
+import { Loader } from '@/components/Loader/Loader'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { deleteFuelRecord, getFuelRecords } from '@/lib/appwrite'
 import { formatDate } from '@/utils/formatDate'

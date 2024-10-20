@@ -8,8 +8,8 @@ import { DEFAULT_USER_SIGN_UP_FORM_VALUES, IMAGES } from '../../constants'
 
 import type { SignUpFormData } from '@/types/UserTypes'
 
-import CustomButton from '@/components/CustomButton'
-import FormField from '@/components/FormField'
+import CustomButton from '@/components/CustomButton/CustomButton'
+import FormField from '@/components/FormField/FormField'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { createUser } from '@/lib/appwrite'
 import { handleAppError } from '@/utils/errorHandler'

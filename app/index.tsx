@@ -6,8 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { IMAGES } from '../constants'
 
-import CustomButton from '@/components/CustomButton'
-import { Loader } from '@/components/Loader'
+import CustomButton from '@/components/CustomButton/CustomButton'
+import { Loader } from '@/components/Loader/Loader'
 import { View, Text } from '@/components/Themed'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 

@@ -6,7 +6,7 @@ import { ICONS } from '../../constants'
 
 import type { ImageProps } from 'react-native'
 
-import FloatingButton from '@/components/FloatingButton'
+import FloatingButton from '@/components/FloatingButton/FloatingButton'
 import { View, Text } from '@/components/Themed'
 
 interface TabIconProps {

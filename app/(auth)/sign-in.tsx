@@ -8,8 +8,8 @@ import { DEFAULT_USER_SIGN_IN_FORM_VALUES, IMAGES } from '../../constants'
 
 import type { SignInFormData } from '@/types/UserTypes'
 
-import CustomButton from '@/components/CustomButton'
-import FormField from '@/components/FormField'
+import CustomButton from '@/components/CustomButton/CustomButton'
+import FormField from '@/components/FormField/FormField'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 import { getCurrentUser, signIn } from '@/lib/appwrite'
 import { handleAppError } from '@/utils/errorHandler'

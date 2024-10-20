@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { SafeAreaView, ScrollView, Text, View } from 'react-native'
 
 import type { FuelFormData } from '@/types/FuelTypes'
 
-import CustomButton from '@/components/CustomButton'
-import CustomImagePicker from '@/components/CustomImagePicker'
-import FormField from '@/components/FormField'
-import { Loader } from '@/components/Loader'
-import VehiclePicker from '@/components/VehiclePicker'
+import CustomButton from '@/components/CustomButton/CustomButton'
+import CustomImagePicker from '@/components/CustomImagePicker/CustomImagePicker'
+import FormField from '@/components/FormField/FormField'
+import { Loader } from '@/components/Loader/Loader'
+import VehiclePicker from '@/components/VehiclePicker/VehiclePicker'
 import { CURRENCY_OPTIONS, DEFAULT_FUEL_FORM_VALUES, FUEL_TYPE_OPTIONS } from '@/constants'
 import { useGlobalContext } from '@/contexts/GlobalProvider'
 
@@ -40,11 +40,10 @@ const FuelForm = ({
 	isLoading,
 	handleImageSelected
 }: FuelFormProps) => {
-	console.log('defaultValues', defaultValues)
 	const {
 		control,
 		handleSubmit,
-		formState: { errors, defaultValues: preFilledValues },
+		formState: { errors },
 		setValue,
 		watch,
 		reset
