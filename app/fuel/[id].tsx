@@ -2,6 +2,7 @@ import { useLocalSearchParams, router } from 'expo-router'
 import React from 'react'
 
 import type { FuelFormData } from '@/types/FuelTypes'
+import type { Href } from 'expo-router'
 
 import FuelForm from '@/components/FuelForm/FuelForm'
 import { Loader } from '@/components/Loader/Loader'
@@ -20,6 +21,7 @@ const UpdateFuel = () => {
 		onSubmit: async (updatedFuel) => {
 			if (user?.$id) {
 				const fuelDataToUpdate = {
+					vehicleId: updatedFuel.vehicleId,
 					userId: user?.$id,
 					date: new Date(updatedFuel.date), // Ensure the date is properly formatted
 					price: parseFloat(String(updatedFuel.price)),
