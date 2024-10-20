@@ -49,7 +49,6 @@ const Vehicles = () => {
 		)
 	}
 
-	// Sort vehicles based on isDescending state
 	const sortedVehicles = isDescending ? vehicles.slice().reverse() : vehicles
 
 	return (
