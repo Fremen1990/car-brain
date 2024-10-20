@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
-import { fireEvent, render, waitFor, screen } from '@testing-library/react-native'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, waitFor, screen, userEvent, act } from '@testing-library/react-native'
 import { router } from 'expo-router'
 import React from 'react'
 
@@ -33,11 +34,15 @@ jest.mock('@/components/VehicleCard/VehicleCard', () => {
 })
 
 describe('Vehicles Screen', () => {
+	const queryClient = new QueryClient()
+
 	const renderComponentWithNavigation = () => {
 		return render(
-			<NavigationContainer>
-				<Vehicles />
-			</NavigationContainer>
+			<QueryClientProvider client={queryClient}>
+				<NavigationContainer>
+					<Vehicles />
+				</NavigationContainer>
+			</QueryClientProvider>
 		)
 	}
 
@@ -80,7 +85,7 @@ describe('Vehicles Screen', () => {
 		})
 
 		const addButton = screen.getByText('Add Vehicle')
-		fireEvent.press(addButton)
+		await userEvent.press(addButton)
 		expect(router.push).toHaveBeenCalledWith('/add-vehicle')
 	})
 
@@ -105,7 +110,7 @@ describe('Vehicles Screen', () => {
 		})
 
 		const sortButton = screen.getByText('Oldest First')
-		fireEvent.press(sortButton)
+		await userEvent.press(sortButton)
 
 		await waitFor(() => {
 			expect(screen.getByText('Newest First')).toBeTruthy()
@@ -122,6 +127,7 @@ describe('Vehicles Screen', () => {
 		})
 
 		const vehicleCard = screen.getByText('BMW')
+
 		fireEvent(vehicleCard, 'onViewableItemsChanged', { viewableItems: [{ item: { $id: '1' } }] })
 
 		await waitFor(() => {

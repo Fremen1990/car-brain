@@ -9,9 +9,9 @@ import { VehicleCard } from '@/components/VehicleCard/VehicleCard'
 import { useVehicles } from '@/hooks/useVehicles'
 
 const Vehicles = () => {
-	const { vehicles, loading, isDescending, activeItem, viewableItemsChanged, getSortAction } = useVehicles()
+	const { vehicles, isLoading, isDescending, activeItem, viewableItemsChanged, getSortAction } = useVehicles()
 
-	if (loading) {
+	if (isLoading) {
 		return <Loader />
 	}
 

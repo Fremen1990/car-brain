@@ -1,5 +1,7 @@
+import { useReactQueryDevTools } from '@dev-plugins/react-query'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -31,6 +33,8 @@ export const unstable_settings = {
 	initialRouteName: '(tabs)'
 }
 
+const queryClient = new QueryClient()
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
@@ -48,6 +52,8 @@ const RootLayout = () => {
 		SpaceMono: SpaceMono,
 		...FontAwesome.font
 	})
+
+	useReactQueryDevTools(queryClient)
 
 	const { isDarkMode } = useTheme()
 
@@ -67,18 +73,20 @@ const RootLayout = () => {
 	}
 
 	return (
-		<GlobalProvider>
-			<CustomThemeProvider>
-				<ThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
-					{/*<Stack screenOptions={{ headerShown: false }}>*/}
-					<Stack>
-						<Stack.Screen name="index" options={{ headerShown: false }} />
-						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-					</Stack>
-				</ThemeProvider>
-			</CustomThemeProvider>
-		</GlobalProvider>
+		<QueryClientProvider client={queryClient}>
+			<GlobalProvider>
+				<CustomThemeProvider>
+					<ThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
+						{/*<Stack screenOptions={{ headerShown: false }}>*/}
+						<Stack>
+							<Stack.Screen name="index" options={{ headerShown: false }} />
+							<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+							<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+						</Stack>
+					</ThemeProvider>
+				</CustomThemeProvider>
+			</GlobalProvider>
+		</QueryClientProvider>
 	)
 }
 

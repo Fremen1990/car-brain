@@ -1,7 +1,6 @@
-import { useFocusEffect } from '@react-navigation/core'
-import { useState, useCallback } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
-import type { Vehicle } from '@/types/VehicleTypes'
 import type { ViewToken } from 'react-native'
 
 import { useGlobalContext } from '@/contexts/GlobalProvider'
@@ -11,18 +10,14 @@ export const useVehicles = () => {
 	const { user } = useGlobalContext()
 	const [activeItem, setActiveItem] = useState<string | undefined>(undefined)
 	const [isDescending, setIsDescending] = useState(true)
-	const [vehicles, setVehicles] = useState<Vehicle[] | null>(null)
-	const [loading, setLoading] = useState(true)
 
-	const fetchVehicles = async () => {
-		setLoading(true)
-		try {
-			const fetchedVehicles = await getAllVehicles(user?.$id || '')
-			setVehicles(fetchedVehicles)
-		} finally {
-			setLoading(false)
+	const getVehicles = async () => {
+		if (user?.$id) {
+			return await getAllVehicles(user.$id)
 		}
 	}
+
+	const { data: vehicles, isLoading } = useQuery({ queryKey: ['vehicles'], queryFn: getVehicles })
 
 	const viewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
 		if (viewableItems.length > 0) {
@@ -39,11 +34,5 @@ export const useVehicles = () => {
 			: undefined
 	}
 
-	useFocusEffect(
-		useCallback(() => {
-			fetchVehicles()
-		}, [user])
-	)
-
-	return { vehicles, loading, isDescending, setIsDescending, activeItem, viewableItemsChanged, getSortAction }
+	return { vehicles, isLoading, isDescending, setIsDescending, activeItem, viewableItemsChanged, getSortAction }
 }

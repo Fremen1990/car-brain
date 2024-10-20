@@ -8,6 +8,7 @@ import pluginReactNative from "eslint-plugin-react-native";
 import pluginPrettier from "eslint-plugin-prettier";
 import pluginJest from "eslint-plugin-jest";
 import pluginImport from "eslint-plugin-import";
+import pluginQuery from '@tanstack/eslint-plugin-query'
 
 export default [
   {
@@ -32,6 +33,7 @@ export default [
       "react-native": pluginReactNative,
       jest: pluginJest,
       import: pluginImport,
+      '@tanstack/query': pluginQuery,
     },
     rules: {
       // General ESLint rules
@@ -93,6 +95,9 @@ export default [
       // Import sorting and separation
       "import/newline-after-import": "error", // Ensures there is a newline after the last import
       "import/no-duplicates": "error", // Prevents duplicate imports
+
+      // Query plugin rules
+      '@tanstack/query/exhaustive-deps': 'error',
     },
   },
   {
