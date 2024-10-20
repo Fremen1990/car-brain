@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
 import type { ViewToken } from 'react-native'
@@ -11,7 +10,7 @@ export const useVehicles = () => {
 	const [activeItem, setActiveItem] = useState<string | undefined>(undefined)
 	const [isDescending, setIsDescending] = useState(true)
 
-	const { data: vehicles, isLoading } = useGetVehiclesQuery(user?.$id)
+	const { data: vehicles, isLoading, isSuccess } = useGetVehiclesQuery(user?.$id)
 
 	const viewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
 		if (viewableItems.length > 0) {
@@ -28,5 +27,14 @@ export const useVehicles = () => {
 			: undefined
 	}
 
-	return { vehicles, isLoading, isDescending, setIsDescending, activeItem, viewableItemsChanged, getSortAction }
+	return {
+		vehicles,
+		isLoading,
+		isSuccess,
+		isDescending,
+		setIsDescending,
+		activeItem,
+		viewableItemsChanged,
+		getSortAction
+	}
 }

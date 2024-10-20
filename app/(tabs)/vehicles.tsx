@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList } from 'react-native'
+import Toast from 'react-native-toast-message'
 
 import EmptyState from '@/components/EmptyState/EmptyState'
 import Header from '@/components/Header/Header'
@@ -9,7 +10,8 @@ import { VehicleCard } from '@/components/VehicleCard/VehicleCard'
 import { useVehicles } from '@/hooks/useVehicles'
 
 const Vehicles = () => {
-	const { vehicles, isLoading, isDescending, activeItem, viewableItemsChanged, getSortAction } = useVehicles()
+	const { vehicles, isLoading, isDescending, isSuccess, activeItem, viewableItemsChanged, getSortAction } =
+		useVehicles()
 
 	if (isLoading) {
 		return <Loader />

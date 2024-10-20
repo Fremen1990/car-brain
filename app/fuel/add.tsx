@@ -1,5 +1,6 @@
 import { router } from 'expo-router'
 import React from 'react'
+import Toast from 'react-native-toast-message'
 
 import type { FuelFormData } from '@/types/FuelTypes'
 
@@ -18,6 +19,15 @@ import { addFuelRecord } from '@/lib/appwrite'
 const Add = () => {
 	const { user } = useGlobalContext()
 
+	const showSuccessToast = () => {
+		Toast.show({
+			type: 'success',
+			text1: 'Fuel record added',
+			text2: 'Your fuel record has been successfully added',
+			visibilityTime: 5000
+		})
+	}
+
 	const { submitForm, isLoading, handleImageSelected } = useFormSubmit<FuelFormData>({
 		onSubmit: async (newFuel) => {
 			if (user?.$id) {
@@ -32,6 +42,7 @@ const Add = () => {
 					mileage: parseInt(String(newFuel.mileage), 10)
 				}
 				await addFuelRecord(fuelData)
+				showSuccessToast()
 				router.push(`/vehicles/${fuelData.vehicleId}`)
 			} else {
 				throw new Error('User ID is missing')

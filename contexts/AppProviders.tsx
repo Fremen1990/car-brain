@@ -2,6 +2,7 @@ import { useReactQueryDevTools } from '@dev-plugins/react-query'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
+import Toast from 'react-native-toast-message'
 
 import type { PropsWithChildren } from 'react'
 
@@ -21,13 +22,16 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
 	const { isDarkMode } = useTheme()
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<GlobalProvider>
-				<ThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
-					<CustomThemeProvider>{children}</CustomThemeProvider>
-				</ThemeProvider>
-			</GlobalProvider>
-		</QueryClientProvider>
+		<>
+			<QueryClientProvider client={queryClient}>
+				<GlobalProvider>
+					<ThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
+						<CustomThemeProvider>{children}</CustomThemeProvider>
+					</ThemeProvider>
+				</GlobalProvider>
+			</QueryClientProvider>
+			<Toast />
+		</>
 	)
 }
 
