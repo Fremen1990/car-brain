@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FlatList } from 'react-native'
-import Toast from 'react-native-toast-message'
+
+import type { Vehicle } from '@/types'
 
 import EmptyState from '@/components/EmptyState/EmptyState'
 import Header from '@/components/Header/Header'
@@ -29,7 +30,8 @@ const Vehicles = () => {
 			<FlatList
 				data={sortedVehicles}
 				horizontal={true}
-				keyExtractor={(item) => item.$id.toString()}
+				// estimatedItemSize={5}
+				keyExtractor={(item: Vehicle) => item.$id.toString()}
 				renderItem={({ item }) => <VehicleCard vehicle={item} activeItem={activeItem} />}
 				onViewableItemsChanged={viewableItemsChanged}
 				contentContainerStyle={{

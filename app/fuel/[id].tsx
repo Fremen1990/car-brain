@@ -2,7 +2,6 @@ import { useLocalSearchParams, router } from 'expo-router'
 import React from 'react'
 
 import type { FuelFormData } from '@/types/FuelTypes'
-import type { Href } from 'expo-router'
 
 import FuelForm from '@/components/FuelForm/FuelForm'
 import { Loader } from '@/components/Loader/Loader'

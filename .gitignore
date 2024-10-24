@@ -11,6 +11,7 @@ coverage/
 .expo/
 dist/
 web-build/
+android/
 
 # Native
 *.orig.*
