@@ -19,10 +19,10 @@ bunx create-tamagui@latest car-brain
 
 When prompted, select:
 
-✅ Monorepo (includes Turborepo)
-✅ Expo (for mobile)
-✅ Solito (for navigation)
-✅ TypeScript
+- ✅ Monorepo (includes Turborepo)
+- ✅ Expo (for mobile)
+- ✅ Solito (for navigation)
+- ✅ TypeScript
 
 ## Car-Brain Development Plan
 
