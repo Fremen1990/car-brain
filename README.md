@@ -14,7 +14,7 @@
 **Step 1: Create Project**
 
 ```bash
-bashbunx create-tamagui@latest car-brain
+bunx create-tamagui@latest car-brain
 ```
 
 When prompted, select:
