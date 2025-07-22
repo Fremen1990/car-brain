@@ -9,6 +9,21 @@
 - Easier to add web app or admin panel later
 - Bun + Turborepo setup is straightforward with create-tamagui-app
 
+### 🚀 Initial Setup with Tamagui
+
+**Step 1: Create Project**
+
+```bash
+bashbunx create-tamagui@latest car-brain
+```
+
+When prompted, select:
+
+✅ Monorepo (includes Turborepo)
+✅ Expo (for mobile)
+✅ Solito (for navigation)
+✅ TypeScript
+
 ## Car-Brain Development Plan
 
 ### 🎯 Project Overview
