@@ -1,60 +1,61 @@
 # Car-Brain App
 
-## Monorepo Decision
+## Architecture Decision: Pseudo-Monorepo
 
-**Start with Monorepo from Day 1** - Here's why:
-- Migration later is painful and time-consuming
-- Immediate benefits: shared types, utils, and components
-- Better code organization from the start
-- Easier to add web app or admin panel later
-- Bun + Turborepo setup is straightforward with create-tamagui-app
+**Using separate standalone apps in one repository** - Here's why:
+- Latest versions of all technologies (React Native 0.76+, Next.js 15, React 19)
+- No monorepo tooling complexity
+- Simple development workflow for solo developer
+- Easy to share types via a shared folder
+- Can evolve to full monorepo later if needed
 
-### 🚀 Initial Setup with Tamagui
+### 🚀 Repository Structure
 
-**Step 1: Create Project**
-
-```bash
-bunx create-tamagui@latest car-brain
 ```
-
-When prompted, select:
-
-- ✅ Monorepo (includes Turborepo)
-- ✅ Expo (for mobile)
-- ✅ Solito (for navigation)
-- ✅ TypeScript
+car-brain/
+├── mobile/                  # Standalone Expo React Native app
+├── web/                     # Standalone Next.js app (when needed)
+├── shared/                  # Shared types and utilities
+│   ├── types/
+│   ├── schemas/            # Zod validation schemas
+│   └── constants/
+├── .gitignore
+└── README.md
+```
 
 ## Car-Brain Development Plan
 
 ### 🎯 Project Overview
 
 **Tech Stack:**
-- **Frontend**: Expo React Native, TypeScript, Tamagui, NativeWind
+- **Mobile**: Expo React Native 0.76+, TypeScript, Tamagui, NativeWind
+- **Web**: Next.js 15, React 19, TypeScript, Tailwind CSS (future)
 - **State**: Zustand (global store)
 - **Forms**: React Hook Form + Zod
 - **Backend**: Appwrite (Auth, Database, Storage)
-- **Build**: EAS Build
+- **Build**: EAS Build (mobile), Vercel (web)
 - **Runtime**: Bun
 - **Architecture**: Clean Architecture, Offline-first
 
-### 📁 Monorepo Structure
+### 📁 Mobile App Structure
 
 ```
-car-brain/
-├── apps/
-│   ├── mobile/              # Expo React Native app
-│   └── web/                 # Future web app (placeholder)
-├── packages/
-│   ├── ui/                  # Shared Tamagui components
-│   ├── app-core/            # Business logic, services
-│   ├── app-state/           # Zustand stores
-│   ├── app-types/           # TypeScript types/interfaces
-│   ├── app-utils/           # Shared utilities
-│   ├── app-hooks/           # Custom React hooks
-│   └── app-config/          # Shared configuration
-├── turbo.json
+car-brain/mobile/
+├── app/                     # Expo Router screens
+├── components/              # UI components
+├── features/                # Feature modules
+│   ├── auth/
+│   ├── cars/
+│   ├── services/
+│   └── drivers/
+├── services/               # API and external services
+├── store/                  # Zustand store
+├── hooks/                  # Custom React hooks
+├── utils/                  # Utilities
+├── metro.config.js         # Metro configuration
 ├── package.json
-└── bun.lockb
+├── app.json               # Expo configuration
+└── eas.json               # EAS Build configuration
 ```
 
 ---
@@ -71,29 +72,62 @@ car-brain/
 
 #### 1.1 Project Initialization
 ```bash
-# Use create-tamagui-app for proper setup
-bunx create-tamagui-app@latest car-brain --template expo-router
-cd car-brain
-bun install
+# Create project structure
+mkdir car-brain && cd car-brain
+mkdir shared mobile
+
+# Initialize mobile app with latest Expo
+cd mobile
+bunx create-expo-app@latest . --template blank-typescript
+
+# Install core dependencies
+bun add expo@~51.0.0 react-native@0.76.5
+bun add zustand react-hook-form zod
+bun add @tamagui/core @tamagui/config @tamagui/animations-react-native
+bun add @react-native-async-storage/async-storage
+bun add expo-router expo-image expo-camera
+bun add appwrite
 ```
 
-#### 1.2 Monorepo Configuration
-- Configure Turborepo for optimal builds
-- Set up package workspaces
-- Configure TypeScript paths
-- Set up ESLint/Prettier
+#### 1.2 Shared Types Setup
+```bash
+cd ../shared
+mkdir types schemas constants
 
-#### 1.3 Core Packages Setup
+# Create shared types structure
+touch types/index.ts types/user.types.ts types/car.types.ts
+touch schemas/index.ts schemas/car.schema.ts
+```
+
+#### 1.3 Metro Configuration for Shared Folder
+```javascript
+// mobile/metro.config.js
+const { getDefaultConfig } = require('expo/metro-config');
+const path = require('path');
+
+const config = getDefaultConfig(__dirname);
+
+// Add shared folder to watchFolders
+config.watchFolders = [
+  path.resolve(__dirname, '../shared')
+];
+
+module.exports = config;
+```
+
+#### 1.4 Core Types Setup
 ```typescript
-// packages/app-types/src/index.ts
+// shared/types/user.types.ts
 export interface User {
   id: string;
   email: string;
   name: string;
   avatar?: string;
+  authProvider: 'email' | 'google' | 'apple';
   createdAt: Date;
 }
 
+// shared/types/car.types.ts
 export interface Car {
   id: string;
   userId: string;
@@ -103,32 +137,28 @@ export interface Car {
   year: number;
   licensePlate?: string;
   imageUrl?: string;
+  localImageUri?: string; // For offline support
   details?: CarDetails;
   createdAt: Date;
   updatedAt: Date;
+  syncStatus: 'synced' | 'pending' | 'error';
 }
 
-// packages/app-config/src/index.ts
-export const config = {
-  appwrite: {
-    endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
-    projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
-  },
-  poland: {
-    vinApiUrl: process.env.EXPO_PUBLIC_POLAND_VIN_API,
-  },
-};
+// mobile/.env
+EXPO_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+EXPO_PUBLIC_APPWRITE_PROJECT_ID=your-project-id
+EXPO_PUBLIC_POLAND_VIN_API=https://api.cepik.gov.pl/
 ```
 
-#### 1.4 Authentication Setup
+#### 1.5 Authentication Setup
 - Implement Appwrite SDK wrapper
 - Create auth service with offline queue
 - Build login/signup screens with Tamagui
 - Set up secure token storage
 
-#### 1.5 Offline-First Architecture
+#### 1.6 Offline-First Architecture
 ```typescript
-// packages/app-core/src/services/offline-queue.ts
+// mobile/services/offline-queue.ts
 export class OfflineQueue {
   private queue: QueuedAction[] = [];
   
@@ -139,16 +169,40 @@ export class OfflineQueue {
 }
 ```
 
-#### 1.6 Navigation Structure
+#### 1.7 Navigation Structure
 - Implement Expo Router with typed routes
 - Create auth guard for protected routes
 - Set up tab navigation structure
+
+#### 1.8 EAS Build Configuration
+```json
+// mobile/eas.json
+{
+  "cli": {
+    "version": ">= 5.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "prebuildCommand": "cp -r ../shared ./src/shared-types"
+    },
+    "production": {
+      "prebuildCommand": "cp -r ../shared ./src/shared-types"
+    }
+  }
+}
+```
 
 ### Deliverables
 - Working authentication (Google, Apple, Email)
 - Basic navigation structure
 - Offline queue system
 - Clean architecture foundation
+- Shared types working between future apps
 
 ---
 
@@ -164,7 +218,9 @@ export class OfflineQueue {
 
 #### 2.1 VIN Lookup Service
 ```typescript
-// packages/app-core/src/services/vin-service.ts
+// mobile/services/vin-service.ts
+import { CarDetails } from '../../shared/types';
+
 export class VINService {
   async lookupVIN(vin: string): Promise<CarDetails> {
     // Integrate with Polish government API
@@ -182,7 +238,9 @@ export class VINService {
 
 #### 2.3 Zustand Store Setup
 ```typescript
-// packages/app-state/src/store.ts
+// mobile/store/index.ts
+import { Car, Driver } from '../../shared/types';
+
 interface AppState {
   user: User | null;
   cars: Car[];
@@ -215,308 +273,72 @@ interface AppState {
 
 ---
 
-## 📋 Stage 3: Service & Maintenance Tracking (Week 5-6)
+## 🌐 Future Web App Integration
 
-### Goals
-- Service record management
-- Cost tracking system
-- Refueling tracker
-- Basic reporting
+When ready to add web app:
 
-### Tasks
+```bash
+# From root directory
+cd car-brain
+mkdir web && cd web
 
-#### 3.1 Data Models Extension
-```typescript
-export interface ServiceRecord {
-  id: string;
-  carId: string;
-  type: 'service' | 'repair' | 'maintenance';
-  date: Date;
-  mileage: number;
-  cost: number;
-  description: string;
-  items: ServiceItem[];
-  receipts: string[];
-}
+# Create Next.js app with latest versions
+bunx create-next-app@latest . --typescript --tailwind --app
 
-export interface RefuelRecord {
-  id: string;
-  carId: string;
-  date: Date;
-  mileage: number;
-  liters: number;
-  cost: number;
-  pricePerLiter: number;
-  station?: string;
-  fuelType: FuelType;
-}
+# Web will import shared types
+import { Car, User } from '../../shared/types';
 ```
 
-#### 3.2 Service Management Screens
-- Service history list
-- Add/edit service records
-- Service type categorization
-- Parts/items tracking
-
-#### 3.3 Refueling Tracker
-- Quick refuel entry form
-- Fuel efficiency calculations
-- Cost per kilometer tracking
-- Refueling history
-
-#### 3.4 Expense Tracking
-- Unified expense view
-- Category-based filtering
-- Monthly/yearly summaries
-- Export capabilities
-
-### Deliverables
-- Complete service tracking
-- Refueling management
-- Basic expense reports
-- Data export functionality
-
 ---
 
-## 📋 Stage 4: Reminders & Notifications (Week 7-8)
+## 📊 Development Workflow
 
-### Goals
-- Reminder system implementation
-- Push notifications setup
-- Calendar integration
-- Alert preferences
-
-### Tasks
-
-#### 4.1 Reminder System
-```typescript
-export interface Reminder {
-  id: string;
-  carId: string;
-  type: ReminderType;
-  title: string;
-  description?: string;
-  dueDate: Date;
-  isRecurring: boolean;
-  recurringPattern?: RecurringPattern;
-  notificationSettings: NotificationSettings;
-}
+### For Mobile Development:
+```bash
+cd car-brain/mobile
+bun install
+bun run ios     # iOS Simulator
+bun run android # Android Emulator
 ```
 
-#### 4.2 Push Notifications
-- Expo Notifications setup
-- Permission handling
-- Local notifications for offline
-- Background task scheduling
+### For Shared Types:
+- Edit files in `shared/` folder
+- Changes automatically reflected in mobile app
+- No build step required
 
-#### 4.3 Calendar Integration
-- Google Calendar sync
-- Apple Calendar support
-- Two-way sync options
-- Calendar event templates
+### Git Workflow:
+```bash
+# Work on main branch (solo developer advantage)
+git add .
+git commit -m "feat: add car management"
+git push
 
-#### 4.4 Alert Management
-- Customizable alert timing
-- Snooze functionality
-- Alert history
-- Smart suggestions
-
-### Deliverables
-- Working reminder system
-- Push notifications active
-- Calendar sync functional
-- Smart alerts implemented
-
----
-
-## 📋 Stage 5: Document Management & OCR (Week 9-10)
-
-### Goals
-- Bill/receipt upload system
-- OCR implementation
-- Document categorization
-- Search functionality
-
-### Tasks
-
-#### 5.1 Document Management
-- Multi-file upload
-- Document preview
-- Category tagging
-- Search and filter
-
-#### 5.2 OCR Integration
-- Text extraction service
-- Auto-fill from receipts
-- Accuracy improvements
-- Manual correction UI
-
-#### 5.3 Storage Optimization
-- Image compression
-- Thumbnail generation
-- Lazy loading
-- Cache management
-
-### Deliverables
-- Document upload working
-- OCR extracting data
-- Search functionality
-- Optimized storage
-
----
-
-## 📋 Stage 6: Analytics & Insights (Week 11-12)
-
-### Goals
-- Expense analytics
-- Fuel efficiency trends
-- Service predictions
-- Visual reports
-
-### Tasks
-
-#### 6.1 Analytics Engine
-- Data aggregation service
-- Trend calculations
-- Predictive algorithms
-- Report generation
-
-#### 6.2 Visualization
-- Chart components (Victory Native)
-- Interactive dashboards
-- Export to PDF/Image
-- Sharing capabilities
-
-#### 6.3 Insights & Predictions
-- Service due predictions
-- Cost trend analysis
-- Fuel efficiency alerts
-- Maintenance suggestions
-
-### Deliverables
-- Analytics dashboard
-- Visual reports
-- Predictive insights
-- Export functionality
-
----
-
-## 📋 Stage 7: Advanced Features (Week 13-14)
-
-### Goals
-- GPS mileage tracking
-- Fuel price tracking
-- Vehicle value estimation
-- Voice commands
-
-### Tasks
-
-#### 7.1 GPS Integration
-- Background location tracking
-- Trip recording
-- Automatic mileage updates
-- Privacy controls
-
-#### 7.2 External Integrations
-- Fuel price APIs
-- Vehicle value APIs
-- Weather integration
-- Traffic data
-
-#### 7.3 Voice Commands
-- Voice input setup
-- Command recognition
-- Natural language processing
-- Accessibility features
-
-### Deliverables
-- GPS tracking active
-- External data integrated
-- Voice commands working
-- Enhanced accessibility
-
----
-
-## 📋 Stage 8: Testing & Optimization (Week 15-16)
-
-### Goals
-- Comprehensive testing
-- Performance optimization
-- Security audit
-- Launch preparation
-
-### Tasks
-
-#### 8.1 Testing Implementation
-```typescript
-// Vitest + React Native Testing Library
-describe('CarService', () => {
-  it('should handle offline car creation', async () => {
-    // Test implementation
-  });
-});
+# Feature branches for experiments only
+git checkout -b experiment/new-ui
 ```
 
-#### 8.2 Performance Optimization
-- Bundle size reduction
-- Lazy loading implementation
-- Memory leak fixes
-- Startup time optimization
+---
 
-#### 8.3 Security & Privacy
-- Data encryption
-- Secure storage audit
-- Privacy policy implementation
-- GDPR compliance
+## 🚀 Deployment
 
-#### 8.4 Launch Preparation
-- App store assets
-- Beta testing program
-- Documentation
-- Support system
+### Mobile App:
+```bash
+cd mobile
+eas build --platform all
+eas submit
+```
 
-### Deliverables
-- 80%+ test coverage
-- Optimized performance
-- Security certified
-- Launch ready
+### Web App (Future):
+```bash
+cd web
+vercel deploy
+```
 
 ---
 
-## 🚀 Post-Launch Roadmap
+## 📋 Subsequent Stages
 
-### Phase 1: Stabilization (Month 1)
-- Bug fixes based on user feedback
-- Performance monitoring
-- User onboarding optimization
-
-### Phase 2: Monetization (Month 2-3)
-- Premium features design
-- Subscription system
-- Payment integration
-- A/B testing
-
-### Phase 3: Expansion (Month 4-6)
-- Multi-country VIN support
-- Web app development
-- Fleet management features
-- API for third parties
-
----
-
-## 📊 Success Metrics
-
-### Technical KPIs
-- App startup time < 2s
-- Offline-to-online sync < 5s
-- Crash rate < 0.1%
-- 95% uptime
-
-### User KPIs
-- User retention (30-day)
-- Feature adoption rates
-- Support ticket volume
-- App store ratings
+[Keep stages 3-8 as they were, but update import paths to use shared folder]
 
 ---
 
@@ -524,6 +346,10 @@ describe('CarService', () => {
 
 ### Code Standards
 ```typescript
+// Use shared types across apps
+import { Car, User } from '../../shared/types';
+import { CreateCarSchema } from '../../shared/schemas';
+
 // Clean, testable service example
 export class CarService {
   constructor(
@@ -533,7 +359,8 @@ export class CarService {
   ) {}
 
   async createCar(data: CreateCarDto): Promise<Car> {
-    const car = await this.storage.saveCar(data);
+    const validated = CreateCarSchema.parse(data);
+    const car = await this.storage.saveCar(validated);
     this.queue.addToQueue({
       type: 'CREATE_CAR',
       data: car,
@@ -544,16 +371,11 @@ export class CarService {
 }
 ```
 
-### Git Workflow
-- Feature branches
-- Conventional commits
-- PR templates
-- Automated testing
+### Solo Developer Advantages:
+- Direct commits to main branch
+- Rapid prototyping
+- Easy refactoring
+- No merge conflicts
+- Full control over architecture decisions
 
-### Documentation
-- API documentation
-- Component storybook
-- Architecture decisions
-- Onboarding guides
-
-This plan provides a clear path from MVP to full-featured app while maintaining clean architecture and offline-first principles. Each stage builds upon the previous one, allowing for continuous delivery and user feedback integration.
+This plan provides a clear path from MVP to full-featured app while maintaining clean architecture and the flexibility to add a web app when needed. The pseudo-monorepo structure keeps things simple while allowing code sharing through the shared folder.
